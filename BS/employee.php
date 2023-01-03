@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free Bootstrap Admin Template : Dream</title>
@@ -12,8 +14,12 @@
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+   <link rel="stylesheet" a href="CSS/Style1.css">
 </head>
 <body>
+
+<?php require_once'process.php'; ?>
+    
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
@@ -23,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">RONEX LIFE</a>
+                <a class="navbar-brand" href="index.html">BS RONEX LIFE</a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -244,13 +250,13 @@
                         <a  href="index.html"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
                     <li>
-                        <a  href="employee.html"><i class="fa fa-desktop"></i> EMPLOYEE </a>
+                        <a class="active-menu" href="employee.html"><i class="fa fa-desktop"></i> REGISTRATION MEMBER </a>
                     </li>
 					<li>
-                        <a class="active-menu" href="Registrationform.html"><i class="fa fa-bar-chart-o"></i> REGISTRATION FORM </a>
+                        <a href="listmembers.php"><i class="fa fa-bar-chart-o"></i> LIST OF MEMBERS </a>
                     </li>
                     <li>
-                        <a  href="Listmembers.html"><i class="fa fa-qrcode"></i> LIST OF MEMBERS </a>
+                        <a href="Listmembers.html"><i class="fa fa-qrcode"></i> MCR </a>
                     </li>
                     
                     <li>
@@ -297,18 +303,114 @@
 
         </nav>
         <!-- /. NAV SIDE  -->
+        
         <div id="page-wrapper" >
             <div id="page-inner">
 			 <div class="row">
+                <h1 class="label success" >MEMBERS INFORMATION</h1>
                     <div class="col-md-12">
                         <h1 class="page-header">
+                            <form method="POST"><br>
+                        <h4 class="label success"  id = "Product"> 1. Product </h4>
+                        <br> <br>
+                                    <div class="small" >
+                                    
+                                        <select name = "product" class="form-control mb-2">
+                                          <option value="La Familia">La Famalia</option>
+                                          <option value="Promo 2">Maharlika</option>
+                                          <option value="Promo 3">Senor Safira</option>
+                                        </select>
+                                   </div>
+                                   <br>
+                                   <h4 class="label success"  id = "Effectdate">2. Effect Date </h4>
+                                 <br>
+                                 <br>
+                               
+                                   <input type="date" style="font-size: 2rem" name ="edate" class="form-control mb-2" > </input>
+                                   <br>
+                                   <h4  class="label success" id = "modeofpayment">3. Mode of Payment </h4>
+                                   <br>
+                                   <br>
+                                   <input type="text" name="mop" placeholder="Mode of Payment" class="form-control mb-2">
+
+                                   <br>
+                           
+                              
+                                <h4 class="label success" id = "Name">4. Name </h4> <br><br>
+                                <input type="text" name="fname" placeholder="Last name:" class="form-control mb-2">
+                                <input type="text" name="mname" placeholder="First name:" class="form-control mb-2">
+                                <input type="text" name="lname" placeholder="Middle name:" class="form-control mb-2">
+                                <br>
+                                <h4 class="label success" id = "presentaddress">5. Present address </h4>  <br> <br>
+                                <input type="text" name="brgy" placeholder="Sub/Brgy:" class="form-control mb-2">
+                                <input type="text" name="city" placeholder="City/Mun." class="form-control mb-2">
+                                <input type="text" name="prov" placeholder="City/Prov." class="form-control mb-2">
+                                <br>
+                                <h4 class= "label success" id = "dob">6. Date of Birth</h4>
+                                <br>   <br>
+                                <input type="date" style="font-size: 2rem" name ="birthdate" class="form-control mb-2"> </input><br>
+                                <h4 class= "label success" id = "backinfo" >7. Backround Info </h4><br><br>
+                                <input type="text" name="religion" placeholder="Religion" class="form-control mb-2">
+                                <input type="text" name="occupation" placeholder="Occupation" class="form-control mb-2">
+                                <input type="text" name="contact" placeholder="Contact No." class="form-control mb-2">
+                                <br>
+                                <h4 class= "label success" id = "civilsatus">8. Civil Status </h4><br><br>
+
+                                <label class="radio-inline" >
+                                    <input type="radio" name="type" value="Single" > <h5>Single</h5>
+                                  </label>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="type"  value="Merried"> <h5>Merried</h5>
+                                  </label>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="type"   value="Separated"><h5>Separated</h5>
+                                  </label>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="type" value="Widow"><h5>Widow</h5>
+                                  </label><br><br>
+
+                                <h4 class= "label success" id = "gender">9. Gender </h4>
+                                <br><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="gender" value="Male"> <h5>Male</h5>
+                                  </label>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="gender" value="Female"> <h5>Female</h5>
+                                  </label>
+                                  <h4 class= "label success" id = "NameofPayer">10. Name of Payer </h4>
+                                   <br><br>
+                                  <input type="text" name="payer" placeholder="Name of Payer" class="form-control mb-2">
+                                  <input type="text" name="pcontact" placeholder="Contact Number" class="form-control mb-2">
+                                  <br>
+                                  
+                                <h4 class= "label success" id = "bci">11. Benificial/Claimants Information </h4>
+                                <br><br>
+                                <input type="text" name="bfname" placeholder="Fistname" class="form-control mb-2">
+                                <input type="text" name="blname" placeholder="Lastname" class="form-control mb-2">
+                                <input type="text" name="bage" placeholder="Age" class="form-control mb-2">
+                                <input type="text" name="brelationship" placeholder="Relationship" class="form-control mb-2">
+                                <br>
+                                <h4 class= "label success" id = "SC">12. Sales Coordinator </h4>    <br><br>
+                                <div class="small"  >
+                                    <select name = "coordinator" class="form-control mb-2">
+                                      <option value="cordinator 1">Coordinator 1</option>
+                                      <option value="cordinator 2">Coordinator 2  </option>
+                                    </select>
+                               </div>
+
+                              <br>
+                                <button class="btn btn-primary" name="save" >SUBMIT</button>
+                                 
+                        
+                            </form>
                             
-                            Empty Page <small>Create new page.</small>
+                          
+                            
                         </h1>
                     </div>
                 </div> 
                  <!-- /. ROW  -->
-				 <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+				 
 				</div>
              <!-- /. PAGE INNER  -->
             </div>

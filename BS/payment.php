@@ -12,6 +12,8 @@
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+   <link rel="stylesheet" href="CSS/Style.css">
+   
 </head>
 <body>
     <div id="wrapper">
@@ -241,25 +243,24 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a  href="index.html"><i class="fa fa-dashboard"></i> DASHBOARD </a>
+                        <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
                     <li>
-                        <a  href="employee.html"><i class="fa fa-desktop"></i> EMPLOYEE </a>
+                        <a  href="Listmembers.php"><i class="fa fa-desktop"></i> MEMBER </a>
                     </li>
 					<li>
-                        <a  href="Registrationform.html"><i class="fa fa-bar-chart-o"></i> REGISTRATION FORM </a>
+                        <a  class="active-menu" href="payment.php"><i class="fa fa-bar-chart-o"></i> PAYMENT </a>
                     </li>
                     <li>
-                        <a  href="Listmembers.html"><i class="fa fa-qrcode"></i> LIST OF MEMBERS </a>
+                        <a href="MCR.php"><i class="fa fa-qrcode"></i> MCR </a>
                     </li>
                     
                     <li>
-                        <a  href="payment.html"><i class="fa fa-table"></i> PAYMENTS </a>
+                        <a href="payment.html"><i class="fa fa-table"></i> PAYMENTS </a>
                     </li>
                     <li>
                         <a href="Monthlicollection.html"><i class="fa fa-edit"></i> MONTHLY COLLECTION REPORT </a>
                     </li>
-
 
                     <li>
                         <a href="#"><i class="fa fa-sitemap"></i> THREE PROMO <span class="fa arrow"></span></a>
@@ -289,7 +290,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="active-menu"  href="empty.html"><i class="fa fa-fw fa-file"></i> EMPTY PAGE </a>
+                        <a href="empty.html"><i class="fa fa-fw fa-file"></i> EMPTY PAGE </a>
                     </li>
                 </ul>
 
@@ -300,15 +301,27 @@
         <div id="page-wrapper" >
             <div id="page-inner">
 			 <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-header">
+              
+             <label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD MEMBER </button>  <br> <br>
+                  
                             
-                            Empty Page <small>Create new page.</small>
-                        </h1>
-                    </div>
+                        <table class="table table-bordered" id='myTable'>
+										
+                                        <th >CN.No</th>
+                                            <th >Firstname</th>
+                                            <th >Middlename</th>
+                                            <th >Lastname</th>
+                                            <th >Mode of Payment</th>
+                                           
+                                        </tr>
+                                        
+                        </table>
+
+
+                     
                 </div> 
                  <!-- /. ROW  -->
-				 <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
+				 
 				</div>
              <!-- /. PAGE INNER  -->
             </div>
