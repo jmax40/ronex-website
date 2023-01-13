@@ -27,10 +27,23 @@ if (isset($_POST['save']))
     $blname = $_POST['blname'];
     $bage = $_POST['bage'];
     $brelationship = $_POST['brelationship'];
+
+    $b2fname = $_POST['b2fname'];
+    $b2lname = $_POST['b2lname'];
+    $b2age = $_POST['b2age'];
+    $b2relation = $_POST['b2relation'];
+
+    $cfname = $_POST['cfname'];
+    $clname = $_POST['clname'];
+    $cage = $_POST['cage'];
+    $crelation = $_POST['crelation'];
+
     $coordinator = $_POST['coordinator'];
+    $contractamount = $_POST['contractamount'];
+    $status = $_POST['status'];
    
 
-	$mysqli->query("INSERT INTO member (idmember,product,edate,mop,fname,mname,lname,brgy,city,prov,birthdate,religion,occupation,contact,type,gender,payer,pcontact,bfname,blname,bage,brelationship,coordinator) VALUES ('$idmember','$product', '$edate', '$mop', '$fname', '$mname', '$lname', '$brgy', '$city', '$prov', '$birthdate', '$religion', '$occupation', '$contact', '$type', '$gender', '$payer','$pcontact','$bfname','$blname','$bage','$brelationship','$coordinator')") or die($mysqli->error);
+	$mysqli->query("INSERT INTO member (idmember,product,edate,mop,fname,mname,lname,brgy,city,prov,birthdate,religion,occupation,contact,type,gender,payer,pcontact,bfname,blname,bage,brelationship,b2fname,b2lname,b2age,b2relation,cfname,clname,cage,crelation,coordinator,contractamount,status) VALUES ('$idmember','$product', '$edate', '$mop', '$fname', '$mname', '$lname', '$brgy', '$city', '$prov', '$birthdate', '$religion', '$occupation', '$contact', '$type', '$gender', '$payer','$pcontact','$bfname','$blname','$bage','$brelationship','$b2fname','$b2lname','$b2age','$b2relation','$cfname','$clname','$cage','$crelation','$coordinator','$contractamount','$status')") or die($mysqli->error);
 
 
 

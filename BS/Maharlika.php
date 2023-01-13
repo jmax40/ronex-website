@@ -15,7 +15,10 @@ $add ="1";
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+
+
+
+
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,14 +36,18 @@ $add ="1";
    
    <script type="text/javascript" src="assets/js/member.js"></script>
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 
 
 </head>
 
+
 <body>
 
+
+
 <?php require_once'process.php'; ?>
-<?php require_once'displayLF.php'; ?>
+<?php require_once'displayM.php'; ?>
 
 
 
@@ -271,6 +278,7 @@ $add ="1";
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
+
                 <li>
                         <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
@@ -286,14 +294,15 @@ $add ="1";
                     </li>
 					
 
+
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a   href="Maharlika.php">Maharlika</a>
+                                <a  class="active-menu" href="Maharlika.php">Maharlika</a>
                             </li>
-                            <li>
-                                <a  class="active-menu" href="LaFamilia.php">La Famillia</a>
+                          <li>
+                                <a " href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
                                 <a  href="Seniorsafira.php">Senior Safira</a>
@@ -334,11 +343,11 @@ $add ="1";
 			 <div class="row">
              
             
+             
+             <i class="fa-sharp fa-solid fa-magnifying-glass"></i> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD MAHARLIKA MEMBER </button>  <br> <br>
+          
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD LA FAMILIA MEMBER </button>  <br> <br>
-
-
-   
+            
 
 
  <table class="table table-bordered" id='myTable'>
@@ -366,10 +375,10 @@ $add ="1";
 								<td class="text-center"><?php echo $row['mop']; ?></td>
                                 <td class="text-center"><?php echo $row['edate']; ?></td>
 								<td class="text-center"><?php echo $row['type']; ?></td>
-								<td  class="text-center"><?php echo $row['coordinator']; ?>
+								<td class="text-center"><?php echo $row['coordinator']; ?>
                                 <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="DelSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2">Pay</a></td>
+                                <td class="text-center"> <a href="DelM.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
+								<td class="text-center"><a  class="btn btn-primary mb-2" data-toggle='modal' href='#Paynow' >Pay</a></td>
 								
 								
 							</tr>
@@ -406,17 +415,17 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>+ ADD MAHARLIKA DETAILS</center></h4>
+        <center>ADD MAHARLIKA MEMBER </center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="LaFamilia.php" enctype='multipart/form-data' style="width: 98%;">        		
+        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
 
             	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
 
-      	        
-                <input type="hidden" name="product" value="LF"/> 
+      	      <input type="hidden" name="product" value="M"/> 
+                  
         		         
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
@@ -483,10 +492,11 @@ $add ="1";
                  
 
 
-                                <input type="hidden" name="cfname" value="NONE"/> 
+                               <input type="hidden" name="cfname" value="NONE"/> 
                                <input type="hidden" name="clname" value="NONE"/> 
                                <input type="hidden" name="cage" value="NONE"/> 
                                <input type="hidden" name="crelation" value="NONE"/> 
+
                  
                  <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
@@ -496,6 +506,9 @@ $add ="1";
                                     </select>
                                     </span></p>
                                </div>
+
+                               <input type="hidden" name="contractamount" value="22800"/>
+                               <input type="hidden" name="status" value="Active"/>
                                
         		                                                      	      		
          </center>
@@ -524,7 +537,7 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>ADD LA FAMILIA MEMBER</center></h4>
+        <center>ADD MEMBER DETAILS</center></h4>
       </div>
 
       <div class="modal-body" >       	
@@ -619,6 +632,45 @@ $add ="1";
 
 
  
+  <div id="Paynow" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="font-size: 14px; font-family: Times New Roman;color:black;">
+      <div class="modal-header" style="background:#222d32">
+        <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
+        <center>PAYMENT TRANSACTION </center></h4>
+      </div>
+
+      <div class="modal-body" >       	
+      	<center> 
+        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
+
+            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
+
+      	      <input type="hidden" name="product" value="M"/> 
+                  
+        		         
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp; OR NUMBER:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMOUNT: <label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+          
+        		                                                      	      		
+         </center>
+
+      </div>
+      <div class="modal-footer">
+       <button type="submit" class="btn btn-success" name="save"> Pay Now </button>&nbsp;
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+      </div> 
+       </form>
+
+
+
+  </div>
+  </div> 
+
+
 
 
         

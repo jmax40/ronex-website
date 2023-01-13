@@ -40,7 +40,8 @@ $add ="1";
 <body>
 
 <?php require_once'process.php'; ?>
-<?php require_once'displayLF.php'; ?>
+<?php require_once'collectordisplay.php'; ?>
+
 
 
 
@@ -55,7 +56,7 @@ $add ="1";
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                //<a class="navbar-brand" href="index.html">BS RONEX LIFE</a>
+                //<a class="navbar-brand" href="index.html">ADMISTRATOR</a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -275,14 +276,17 @@ $add ="1";
                         <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
 
+                    <li>
+                        <a href="Monthlicollection.html"><i class="fa fa-edit"></i> EMPLOYEE </a>
+                    </li>
                         
                     <li>
-                        <a href="Monthlicollection.html"><i class="fa fa-edit"></i> COLLECTOR </a>
+                        <a class="active-menu" href="ADMcollector.php"><i class="fa fa-edit"></i> COLLECTOR </a>
                     </li>
 
               
                     <li>
-                        <a  href="listmembers.php"><i class="fa fa-desktop"></i> MANAGER </a>
+                        <a  href="ADMmanager.php"><i class="fa fa-desktop"></i> MANAGER </a>
                     </li>
 					
 
@@ -293,7 +297,7 @@ $add ="1";
                                 <a   href="Maharlika.php">Maharlika</a>
                             </li>
                             <li>
-                                <a  class="active-menu" href="LaFamilia.php">La Famillia</a>
+                                <a href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
                                 <a  href="Seniorsafira.php">Senior Safira</a>
@@ -335,7 +339,7 @@ $add ="1";
              
             
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD LA FAMILIA MEMBER </button>  <br> <br>
+<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD STAFF </button>  <br> <br>
 
 
    
@@ -343,33 +347,33 @@ $add ="1";
 
  <table class="table table-bordered" id='myTable'>
 										
-                            <th >CN.No</th>
+                                <th >Staff No.</th>
 								<th >Name</th>
+                                <th >Age</th>
 								<th >Address</th>
-								<th >MOP </th>
-								<th >Effect Date</th>
-								<th >Status</th>
-								<th >Agent</th>
+                                <th >Branch</th>
+								<th >Username</th>
+								<th >Position</th>
+							
 							
 							</tr>
 
                             <?php 
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
-								<td class="text-center"><?php echo $row['idmember']; ?></td>
+								<td class="text-center"><?php echo $row['id']; ?></td>
 								<td class="text-center"><?php echo $row['fname']; ?>
 								<?php echo $row['mname']; ?>
 								<?php echo $row['lname']; ?></td>
-								<td class="text-center"><?php echo $row['brgy']; ?>
-                                <?php echo $row['city']; ?>
-								<?php echo $row['prov']; ?></td>
-								<td class="text-center"><?php echo $row['mop']; ?></td>
-                                <td class="text-center"><?php echo $row['edate']; ?></td>
-								<td class="text-center"><?php echo $row['type']; ?></td>
-								<td  class="text-center"><?php echo $row['coordinator']; ?>
-                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="DelSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2">Pay</a></td>
+                                <td class="text-center"><?php echo $row['age']; ?></td>
+								<td class="text-center"><?php echo $row['address']; ?></td>
+                                <td class="text-center"><?php echo $row['branch']; ?></td>
+							
+								<td class="text-center"><?php echo $row['username']; ?></td>
+                                <td class="text-center"><?php echo $row['position']; ?></td>
+
+                                <td><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> MCR </a></td>
+                               
 								
 								
 							</tr>
@@ -406,49 +410,30 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>+ ADD MAHARLIKA DETAILS</center></h4>
+        <center> ADD STAFF </center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="LaFamilia.php" enctype='multipart/form-data' style="width: 98%;">        		
+        		<form method="post" action="ADMemployee.php" enctype='multipart/form-data' style="width: 98%;">        		
 
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
+            	 
 
-      	        
-                <input type="hidden" name="product" value="LF"/> 
+      	     
         		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-
+                
+                
                  
         	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
         		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname"></span></p>
-                
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Mun:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="city"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Prov:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="prov"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" style="width:270px;"  name ="birthdate"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" name ="birthdate" style="width:270px;"  name ="edate"></input></p>
 
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Religion:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="religion"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact"></span></p>
-                
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="age"></span></p>
+
+                   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="address"></span></p>
                 
                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
-                                      <option value="Single">Single</option>
-                                      <option value="Merried">Merried</option>
-                                      <option value="Sepparated">Sepparated</option>
-                                      <option value="Widow">Widow</option>
-                                    </select>
-                                    </span></p>
-                               </div>
-              
-                              
-
-                               <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender:<label style="color: red;font-size:20px;">*<select name = "gender" style="width:270px;">
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
@@ -456,48 +441,35 @@ $add ="1";
                                     </select>
                                     </span></p>
                                </div>
-              
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Username:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="username"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; password:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="password" name="password"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Re-type:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="password" name="cpassword"></span></p>
+               
 
-
-
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer"></span></p>
-                              <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact"></span></p>
-
-
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1st Benificial<label style="color: red;font-size:20px;"></label>
-
-                          
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname"> </span> </p> 
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship"></span></p>
-
-                 
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2nd Benificial<label style="color: red;font-size:20px;"></label>
-
-                          
-<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2fname"> </span> </p> 
-<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2lname"></span></p>
-<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age"></span></p>
-<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2relation"></span></p>
-                 
-
-
-                                <input type="hidden" name="cfname" value="NONE"/> 
-                               <input type="hidden" name="clname" value="NONE"/> 
-                               <input type="hidden" name="cage" value="NONE"/> 
-                               <input type="hidden" name="crelation" value="NONE"/> 
-                 
-                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1">Agent name 1</option>
-                                      <option value="Agent name 2">Agent name 2</option>
+                <div class="small" >
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Branch:<label style="color: red;font-size:20px;">*<select name = "branch" style="width:270px;">
+                                      <option value="Esperanza">Esperanza</option>
+                                      <option value="Tacurong">Tacurong</option>
+                                      <option value="Bagumbayan">Bagumbayan</option>
+                                      <option value="Isulan">Isulan</option>
                                       
                                     </select>
                                     </span></p>
                                </div>
-                               
-        		                                                      	      		
+
+                <div class="small" >
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Position:<label style="color: red;font-size:20px;">*<select name = "position" style="width:270px;">
+                                      <option value="Agent">Agent</option>
+                                      <option value="BS">BS</option>
+                                      <option value="Manager">Manager</option>
+                                     
+                                      
+                                    </select>
+                                    </span></p>
+                               </div>
+                
+                              
+		                                                      	      		
          </center>
 
       </div>
@@ -524,7 +496,7 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>ADD LA FAMILIA MEMBER</center></h4>
+        <center>ADD STAFF</center></h4>
       </div>
 
       <div class="modal-body" >       	

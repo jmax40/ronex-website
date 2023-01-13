@@ -30,7 +30,7 @@
     $b2fname = $row['b2fname'];
     $b2lname = $row['b2lname'];
     $b2age = $row['b2age'];
-    $b2relationship = $row['b2relation'];
+    $b2relation = $row['b2relation'];
     $coordinator = $row['coordinator'];
 	}
 
@@ -114,8 +114,8 @@
 
                  <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $b2fname?>"></span></p>
         	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $b2lname ?>"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age" value="<?php echo $b2age ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $b2relationship ?>"></span></p>
+        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="age" value="<?php echo $b2age ?>"></span></p>
+                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $b2relation ?>"></span></p>
                  
 
 
@@ -134,7 +134,7 @@
      
       <div class="modal-footer">
        <button type="submit" href = "listmembers.php" class="btn btn-success" name="update"> Update</button>&nbsp;
-        <a type="button" href = "Maharlika.php" class="btn btn-success" >Close</a>
+        <a type="button" href = "LaFamilia.php" class="btn btn-success" >Close</a>
       </div>
       </div> 
 						</form>

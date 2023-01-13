@@ -23,16 +23,14 @@
     $gender = $row['gender'];
     $payer = $row['payer'];
     $pcontact = $row['pcontact'];
-    $bfname = $row['bfname'];
-    $blname = $row['blname'];
-    $bage = $row['bage'];
-    $brelationship = $row['brelationship'];
-    $b2fname = $row['b2fname'];
-    $b2lname = $row['b2lname'];
-    $b2age = $row['b2age'];
-    $b2relationship = $row['b2relation'];
+    $cfname = $row['cfname'];
+    $clname = $row['clname'];
+    $cage = $row['cage'];
+    $crelation = $row['crelation'];
     $coordinator = $row['coordinator'];
-	}
+}
+
+	
 
  ?>
 
@@ -99,23 +97,13 @@
                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact" value="<?php echo $pcontact ?>"></span></p>
 
 
-                            <center>   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1st Benificial<label style="color: red;font-size:20px;"></label></center>
+                            <center>   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Claimants<label style="color: red;font-size:20px;"></label></center>
 
                           
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $bfname?>"></span></p>
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $blname ?>"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $bage ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $brelationship ?>"></span></p>
-                 
-
-
-                 <center>   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Benificial<label style="color: red;font-size:20px;"></label></center>
-
-
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $b2fname?>"></span></p>
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $b2lname ?>"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age" value="<?php echo $b2age ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $b2relationship ?>"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $cfname?>"></span></p>
+        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $clname ?>"></span></p>
+        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $cage ?>"></span></p>
+                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $crelation ?>"></span></p>
                  
 
 
@@ -134,7 +122,7 @@
      
       <div class="modal-footer">
        <button type="submit" href = "listmembers.php" class="btn btn-success" name="update"> Update</button>&nbsp;
-        <a type="button" href = "Maharlika.php" class="btn btn-success" >Close</a>
+        <a type="button" href = "Seniorsafira.php" class="btn btn-success" >Close</a>
       </div>
       </div> 
 						</form>

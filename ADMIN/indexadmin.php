@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"> BS RONEX LIFE </a>
+                <a class="navbar-brand" href="index.html">ADMINISTRATOR </a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -249,9 +249,12 @@
                         <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
 
-                        
                     <li>
-                        <a href="collector.php"><i class="fa fa-edit"></i> COLLECTOR </a>
+                        <a href="ADMemployee.php"><i class="fa fa-edit"></i> EMPLOYEE </a>
+                    </li>
+
+                    <li>
+                        <a href="Monthlicollection.html"><i class="fa fa-edit"></i> COLLECTOR </a>
                     </li>
 
               

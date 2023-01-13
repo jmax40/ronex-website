@@ -40,7 +40,7 @@ $add ="1";
 <body>
 
 <?php require_once'process.php'; ?>
-<?php require_once'displayLF.php'; ?>
+<?php require_once'collectordisplay.php'; ?>
 
 
 
@@ -272,17 +272,17 @@ $add ="1";
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                 <li>
-                        <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
+                        <a href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
 
                         
                     <li>
-                        <a href="Monthlicollection.html"><i class="fa fa-edit"></i> COLLECTOR </a>
+                        <a   class="active-menu" href="collector.php"><i class="fa fa-edit"></i> COLLECTOR </a>
                     </li>
 
               
                     <li>
-                        <a  href="listmembers.php"><i class="fa fa-desktop"></i> MANAGER </a>
+                        <a  href="Manager.php"><i class="fa fa-desktop"></i> MANAGER </a>
                     </li>
 					
 
@@ -335,7 +335,7 @@ $add ="1";
              
             
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD LA FAMILIA MEMBER </button>  <br> <br>
+<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <br><br>
 
 
    
@@ -343,33 +343,32 @@ $add ="1";
 
  <table class="table table-bordered" id='myTable'>
 										
-                            <th >CN.No</th>
+                                 <th >ID.No</th>
 								<th >Name</th>
 								<th >Address</th>
-								<th >MOP </th>
-								<th >Effect Date</th>
-								<th >Status</th>
-								<th >Agent</th>
+                                 <th >Branch</th>
+								
+                                                               
+
+								
 							
 							</tr>
 
                             <?php 
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
-								<td class="text-center"><?php echo $row['idmember']; ?></td>
+								<td class="text-center"><?php echo $row['id']; ?></td>
 								<td class="text-center"><?php echo $row['fname']; ?>
 								<?php echo $row['mname']; ?>
 								<?php echo $row['lname']; ?></td>
-								<td class="text-center"><?php echo $row['brgy']; ?>
-                                <?php echo $row['city']; ?>
-								<?php echo $row['prov']; ?></td>
-								<td class="text-center"><?php echo $row['mop']; ?></td>
-                                <td class="text-center"><?php echo $row['edate']; ?></td>
-								<td class="text-center"><?php echo $row['type']; ?></td>
-								<td  class="text-center"><?php echo $row['coordinator']; ?>
-                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="DelSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2">Pay</a></td>
+
+								<td class="text-center"><?php echo $row['address']; ?></td>
+                              
+								<td class="text-center"><?php echo $row['branch']; ?></td>
+							
+                               
+                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> MCR</a></td>
+                       
 								
 								
 							</tr>

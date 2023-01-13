@@ -40,7 +40,7 @@ $add ="1";
 <body>
 
 <?php require_once'process.php'; ?>
-<?php require_once'displayLF.php'; ?>
+<?php require_once'displaySS.php'; ?>
 
 
 
@@ -271,6 +271,7 @@ $add ="1";
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
+
                 <li>
                         <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
@@ -287,16 +288,16 @@ $add ="1";
 					
 
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li>
+                        <li>
                                 <a   href="Maharlika.php">Maharlika</a>
                             </li>
-                            <li>
-                                <a  class="active-menu" href="LaFamilia.php">La Famillia</a>
+                          <li>
+                                <a  href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
-                                <a  href="Seniorsafira.php">Senior Safira</a>
+                                <a class="active-menu" href="Seniorsafira.php">Senior Safira</a>
                             </li>
                             <li>
                                 <a href="#">Promo<span class="fa arrow"></span></a>
@@ -335,7 +336,7 @@ $add ="1";
              
             
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD LA FAMILIA MEMBER </button>  <br> <br>
+<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD SENIOR SAFIRA MEMBER </button>  <br> <br>
 
 
    
@@ -357,20 +358,19 @@ $add ="1";
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
 								<td class="text-center"><?php echo $row['idmember']; ?></td>
-								<td class="text-center"><?php echo $row['fname']; ?>
+								<td><?php echo $row['fname']; ?>
 								<?php echo $row['mname']; ?>
 								<?php echo $row['lname']; ?></td>
 								<td class="text-center"><?php echo $row['brgy']; ?>
                                 <?php echo $row['city']; ?>
 								<?php echo $row['prov']; ?></td>
 								<td class="text-center"><?php echo $row['mop']; ?></td>
-                                <td class="text-center"><?php echo $row['edate']; ?></td>
-								<td class="text-center"><?php echo $row['type']; ?></td>
-								<td  class="text-center"><?php echo $row['coordinator']; ?>
-                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="DelSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2">Pay</a></td>
-								
+                                <td><?php echo $row['edate']; ?></td>
+								<td><?php echo $row['type']; ?></td>
+								<td class="text-center"><?php echo $row['coordinator']; ?>
+                                <td><a href="editSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
+                                <td> <a href="delete.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
+								<td class="text-center"><a class="btn btn-primary mb-2" data-toggle='modal' href='#Paynow'>Pay</a></td>
 								
 							</tr>
 						<?php endwhile; ?>
@@ -406,17 +406,18 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>+ ADD MAHARLIKA DETAILS</center></h4>
+        <center>ADD SENIOR SAFIRA MEMBER</center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="LaFamilia.php" enctype='multipart/form-data' style="width: 98%;">        		
+        		<form method="post" action="Seniorsafira.php" enctype='multipart/form-data' style="width: 98%;">        		
 
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
+            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/>
+                 
 
-      	        
-                <input type="hidden" name="product" value="LF"/> 
+                <input type="hidden" name="product" value="SS"/> 
+                  
         		         
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
@@ -464,29 +465,30 @@ $add ="1";
                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact"></span></p>
 
 
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1st Benificial<label style="color: red;font-size:20px;"></label>
+                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Claimants <label style="color: red;font-size:20px;"></label>
 
                           
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname"> </span> </p> 
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship"></span></p>
+
+                               <input type="hidden" name="bfname" value="NONE"/> 
+                               <input type="hidden" name="blname" value="NONE"/> 
+                               <input type="hidden" name="bage" value="NONE"/> 
+                               <input type="hidden" name="brelationship" value="NONE"/>
+
+                               <input type="hidden" name="b2fname" value="NONE"/> 
+                               <input type="hidden" name="b2lname" value="NONE"/> 
+                               <input type="hidden" name="b2age" value="NONE"/> 
+                               <input type="hidden" name="b2relation" value="NONE"/> 
+                               
+
+
+
+                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cfname"> </span> </p> 
+        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="clname"></span></p>
+        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cage"></span></p>
+                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="crelation"></span></p>
 
                  
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2nd Benificial<label style="color: red;font-size:20px;"></label>
-
-                          
-<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2fname"> </span> </p> 
-<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2lname"></span></p>
-<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age"></span></p>
-<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2relation"></span></p>
-                 
-
-
-                                <input type="hidden" name="cfname" value="NONE"/> 
-                               <input type="hidden" name="clname" value="NONE"/> 
-                               <input type="hidden" name="cage" value="NONE"/> 
-                               <input type="hidden" name="crelation" value="NONE"/> 
+           
                  
                  <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
@@ -496,6 +498,9 @@ $add ="1";
                                     </select>
                                     </span></p>
                                </div>
+
+                               <input type="hidden" name="contractamount" value="21000"/> 
+                               <input type="hidden" name="status" value="Active"/>
                                
         		                                                      	      		
          </center>
@@ -524,7 +529,7 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>ADD LA FAMILIA MEMBER</center></h4>
+        <center>ADD MEMBER DETAILS</center></h4>
       </div>
 
       <div class="modal-body" >       	
@@ -617,6 +622,46 @@ $add ="1";
   </div>
   </div>
 
+
+
+
+  <div id="Paynow" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="font-size: 14px; font-family: Times New Roman;color:black;">
+      <div class="modal-header" style="background:#222d32">
+        <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
+        <center>PAYMENT TRANSACTION </center></h4>
+      </div>
+
+      <div class="modal-body" >       	
+      	<center> 
+        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
+
+            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
+
+      	      <input type="hidden" name="product" value="M"/> 
+                  
+        		         
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp; OR NUMBER:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMOUNT: <label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+          
+        		                                                      	      		
+         </center>
+
+      </div>
+      <div class="modal-footer">
+       <button type="submit" class="btn btn-success" name="save"> Pay Now </button>&nbsp;
+        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+      </div> 
+       </form>
+
+
+
+  </div>
+  </div> 
 
  
 
