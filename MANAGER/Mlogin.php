@@ -37,7 +37,7 @@
 			$username = mysqli_real_escape_string($conn, $_POST['username']);
 			$password = mysqli_real_escape_string($conn, $_POST['password']);
 			
-			$query 		= mysqli_query($conn, "SELECT * FROM bsaccount WHERE  password='$password' and username='$username'");
+			$query 		= mysqli_query($conn, "SELECT * FROM employee WHERE position = 'Manager' and  password='$password' and username='$username'");
 			$row		= mysqli_fetch_array($query);
 			$num_row 	= mysqli_num_rows($query);
 			

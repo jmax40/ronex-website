@@ -6,9 +6,49 @@ if (isset($_POST['save']))
 
     $idmembers = $_POST['idmember'];
 	$product = $_POST['product'];
+        $price = $_POST['price'];
+
     $idmember = $product.''.$idmembers;
 	$edate = $_POST['edate'];
 	$mop = $_POST['mop'];
+    
+
+
+
+    $number1 = 30;
+    $number2 = 90;
+    $number3 = 180;
+    $number4 = 360;
+    $number5 = 1825;
+
+    
+    if ($mop == $number1) {
+  
+        $modetag = "M";
+     
+      
+      } elseif ($mop  == $number2) {
+      
+        $modetag = "Q";
+      
+      }  elseif ($mop  == $number3) {
+        $modetag = "SA";
+        
+      }  elseif ($mop  == $number4) {
+        $modetag = "A";
+      
+      }  elseif ($mop  == $number5) {
+        $modetag = "SC";
+       
+      } 
+      else {
+          echo "";
+         
+      }
+
+
+
+    
 	$fname = $_POST['fname'];
 	$mname = $_POST['mname'];
 	$lname = $_POST['lname'];
@@ -27,7 +67,6 @@ if (isset($_POST['save']))
     $blname = $_POST['blname'];
     $bage = $_POST['bage'];
     $brelationship = $_POST['brelationship'];
-
     $b2fname = $_POST['b2fname'];
     $b2lname = $_POST['b2lname'];
     $b2age = $_POST['b2age'];
@@ -41,9 +80,10 @@ if (isset($_POST['save']))
     $coordinator = $_POST['coordinator'];
     $contractamount = $_POST['contractamount'];
     $status = $_POST['status'];
+    $installment = "0";
    
 
-	$mysqli->query("INSERT INTO member (idmember,product,edate,mop,fname,mname,lname,brgy,city,prov,birthdate,religion,occupation,contact,type,gender,payer,pcontact,bfname,blname,bage,brelationship,b2fname,b2lname,b2age,b2relation,cfname,clname,cage,crelation,coordinator,contractamount,status) VALUES ('$idmember','$product', '$edate', '$mop', '$fname', '$mname', '$lname', '$brgy', '$city', '$prov', '$birthdate', '$religion', '$occupation', '$contact', '$type', '$gender', '$payer','$pcontact','$bfname','$blname','$bage','$brelationship','$b2fname','$b2lname','$b2age','$b2relation','$cfname','$clname','$cage','$crelation','$coordinator','$contractamount','$status')") or die($mysqli->error);
+	$mysqli->query("INSERT INTO member (idmember,product,price,edate,mop,fname,mname,lname,brgy,city,prov,birthdate,religion,occupation,contact,type,gender,payer,pcontact,bfname,blname,bage,brelationship,b2fname,b2lname,b2age,b2relation,cfname,clname,cage,crelation,coordinator,contractamount,status,modetag,installment) VALUES ('$idmember','$product','$price','$edate', '$mop', '$fname', '$mname', '$lname', '$brgy', '$city', '$prov', '$birthdate', '$religion', '$occupation', '$contact', '$type', '$gender', '$payer','$pcontact','$bfname','$blname','$bage','$brelationship','$b2fname','$b2lname','$b2age','$b2relation','$cfname','$clname','$cage','$crelation','$coordinator','$contractamount','$status','$modetag','$installment')") or die($mysqli->error);
 
 
 

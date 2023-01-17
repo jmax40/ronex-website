@@ -333,7 +333,7 @@ $add ="1";
 
 			 <div class="row">
              
-            
+             <img src="img/heading.png" alt="image">       
 
 <label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <br><br>
 

@@ -302,7 +302,7 @@ $add ="1";
                                 <a  class="active-menu" href="Maharlika.php">Maharlika</a>
                             </li>
                           <li>
-                                <a " href="LaFamilia.php">La Famillia</a>
+                                <a  href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
                                 <a  href="Seniorsafira.php">Senior Safira</a>
@@ -342,8 +342,9 @@ $add ="1";
 
 			 <div class="row">
              
-            
+             <img src="img/heading.png" alt="image">
              
+
              <i class="fa-sharp fa-solid fa-magnifying-glass"></i> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD MAHARLIKA MEMBER </button>  <br> <br>
           
 
@@ -356,7 +357,7 @@ $add ="1";
 								<th >Name</th>
 								<th >Address</th>
 								<th >MOP </th>
-								<th >Effect Date</th>
+								<th >Enrolled Date</th>
 								<th >Status</th>
 								<th >Agent</th>
 							
@@ -372,13 +373,13 @@ $add ="1";
 								<td class="text-center"><?php echo $row['brgy']; ?>
                                 <?php echo $row['city']; ?>
 								<?php echo $row['prov']; ?></td>
-								<td class="text-center"><?php echo $row['mop']; ?></td>
+								<td class="text-center"><?php echo $row['modetag']; ?></td>
                                 <td class="text-center"><?php echo $row['edate']; ?></td>
 								<td class="text-center"><?php echo $row['type']; ?></td>
 								<td class="text-center"><?php echo $row['coordinator']; ?>
                                 <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
                                 <td class="text-center"> <a href="DelM.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a  class="btn btn-primary mb-2" data-toggle='modal' href='#Paynow' >Pay</a></td>
+								<td class="text-center"><a href="Maharlikapay.php?GetID=<?php echo $row['id'] ?>" class="btn btn-danger"  >Pay</a></td>
 								
 								
 							</tr>
@@ -424,12 +425,25 @@ $add ="1";
 
             	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
 
-      	      <input type="hidden" name="product" value="M"/> 
+      	         <input type="hidden" name="product" value="M"/> 
+                   <input type="hidden" name="price" value="380"/> 
                   
         		         
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+                
 
+                <div class="small" >
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOP:<label style="color: red;font-size:20px;">*<select name = "mop" style="width:270px;">
+                                      <option value="30">M</option>
+                                      <option value="90">Q</option>
+                                      <option value="180">SA</option>
+                                      <option value="360">A</option>
+                                      <option value="1825">SC</option>
+
+                                      
+                                    </select>
+                                    </span></p>
+                               </div>
                  
         	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
         		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
@@ -509,6 +523,7 @@ $add ="1";
 
                                <input type="hidden" name="contractamount" value="22800"/>
                                <input type="hidden" name="status" value="Active"/>
+                              
                                
         		                                                      	      		
          </center>
@@ -614,6 +629,8 @@ $add ="1";
                                     </select>
                                     </span></p>
                                </div>
+
+
         		                                                         	      		
          </center>
 
@@ -632,43 +649,6 @@ $add ="1";
 
 
  
-  <div id="Paynow" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content" style="font-size: 14px; font-family: Times New Roman;color:black;">
-      <div class="modal-header" style="background:#222d32">
-        <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>PAYMENT TRANSACTION </center></h4>
-      </div>
-
-      <div class="modal-body" >       	
-      	<center> 
-        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
-
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
-
-      	      <input type="hidden" name="product" value="M"/> 
-                  
-        		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp; OR NUMBER:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMOUNT: <label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-          
-        		                                                      	      		
-         </center>
-
-      </div>
-      <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Pay Now </button>&nbsp;
-        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-      </div>
-      </div> 
-       </form>
-
-
-
-  </div>
-  </div> 
 
 
 

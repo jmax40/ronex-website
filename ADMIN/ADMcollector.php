@@ -337,7 +337,7 @@ $add ="1";
 
 			 <div class="row">
              
-            
+           <img src="img/heading.png" alt="image"> 
 
 <label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD STAFF </button>  <br> <br>
 
