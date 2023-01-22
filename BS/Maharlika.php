@@ -12,6 +12,32 @@ $add ="1";
 
 ?>
 
+<?php
+    // Connect to the database
+    $conn = mysqli_connect("localhost", "root", "123456", "db_ronex");
+
+    // Fetch the data from the database
+    $query = "SELECT fullname FROM employee where position = 'Agent' ";
+    $result = mysqli_query($conn, $query);
+
+    // Convert the data into an array
+    $options = array();
+    while($row = mysqli_fetch_assoc($result)) {
+        $options[] = $row;
+    }
+?>
+
+
+<?php
+$servername='localhost';
+$username='root';
+$password='123456';
+$dbname = "db_ronex";
+$conn=mysqli_connect($servername,$username,$password,"$dbname");
+if(!$conn){
+die('Could not Connect My Sql:' .mysql_error());
+}
+?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -379,7 +405,7 @@ $add ="1";
 								<td class="text-center"><?php echo $row['coordinator']; ?>
                                 <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
                                 <td class="text-center"> <a href="DelM.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="Maharlikapay.php?GetID=<?php echo $row['id'] ?>" class="btn btn-danger"  >Pay</a></td>
+								<td class="text-center"><a href="Maharlikapayment.php?GetID=<?php echo $row['id'] ?>" class="btn btn-danger"  >Pay</a></td>
 								
 								
 							</tr>
@@ -429,7 +455,7 @@ $add ="1";
                    <input type="hidden" name="price" value="380"/> 
                   
         		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date"  style="width:270px;"  name ="edate"></input></p>
                 
 
                 <div class="small" >
@@ -512,11 +538,18 @@ $add ="1";
                                <input type="hidden" name="crelation" value="NONE"/> 
 
                  
+                          
                  <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1">Agent name 1</option>
-                                      <option value="Agent name 2">Agent name 2</option>
-                                      
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select id="search" name = "coordinator" style="width:270px;">
+                                      <option id="myList"  <?php foreach ($options as $option) { ?>
+            <option value="<?= $option['fullname']?>"><?= $option['fullname'] ?></option>
+        <?php } ?> ></option>
+                                     
+                            
+
+
+
+
                                     </select>
                                     </span></p>
                                </div>
@@ -525,7 +558,19 @@ $add ="1";
                                <input type="hidden" name="status" value="Active"/>
                               
                                
-        		                                                      	      		
+
+                         
+                               
+        		   
+                            
+
+
+                           
+
+
+                            
+
+
          </center>
 
       </div>
@@ -537,9 +582,31 @@ $add ="1";
        </form>
 
 
+  
+
+
+
 
   </div>
   </div> 
+
+<script>
+  function filterOptions() {
+  var searchTerm = document.getElementById("search").value.toLowerCase();
+  var select = document.getElementById("myList");
+  var options = select.options;
+
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].text.toLowerCase().indexOf(searchTerm) === -1) {
+      options[i].style.display = "none";
+    } else {
+      options[i].style.display = "block";
+    }
+  }
+}
+
+</script>
+
 
 
 

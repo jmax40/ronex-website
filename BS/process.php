@@ -5,46 +5,145 @@ if (isset($_POST['save']))
 {
 
     $idmembers = $_POST['idmember'];
-	$product = $_POST['product'];
-        $price = $_POST['price'];
-
+	$productall = $_POST['product'];
     $idmember = $product.''.$idmembers;
 	$edate = $_POST['edate'];
 	$mop = $_POST['mop'];
     
 
 
+  $product1 = "M";
+  $product2 = "LF";
+  $product3 = "SS";
+  $product4 = "SSP1";
 
-    $number1 = 30;
-    $number2 = 90;
-    $number3 = 180;
-    $number4 = 360;
-    $number5 = 1825;
 
-    
-    if ($mop == $number1) {
+  if ($productall ==  $product1) {
+
+  $product = "M";
+
+  $number1 = 30;
+  $number2 = 90;
+  $number3 = 180;
+  $number4 = 360;
+  $number5 = 1825;
+
   
-        $modetag = "M";
+  if ($mop == $number1) {
+
+      $modetag = "M";
+      $contractamount = "22800";
+      $price = "380";
+
+   
+    
+    } elseif ($mop  == $number2) {
+    
+      $modetag = "Q";
+      $contractamount = "21600";
+      $price = "1080";
+    
+    }  elseif ($mop  == $number3) {
+      $modetag = "SA";
+      $price = "2100";
+      $contractamount = "21000";
+      
+    }  elseif ($mop  == $number4) {
+      $modetag = "A";
+      $price = "4080";
+      $contractamount = "20400";
+      
+    
+    }  elseif ($mop  == $number5) {
+      $modetag = "SC";
+      $contractamount = "18500";
+      $price = "18500";
      
-      
-      } elseif ($mop  == $number2) {
-      
-        $modetag = "Q";
-      
-      }  elseif ($mop  == $number3) {
-        $modetag = "SA";
-        
-      }  elseif ($mop  == $number4) {
-        $modetag = "A";
-      
-      }  elseif ($mop  == $number5) {
-        $modetag = "SC";
+    } 
+    else {
+        echo "";
        
-      } 
-      else {
-          echo "";
-         
-      }
+    }
+
+
+
+
+
+  } elseif ($productall  == $product2) {
+  
+    $product = "LF";
+    
+  $number1 = 30;
+  $number2 = 90;
+  $number3 = 180;
+  $number4 = 360;
+  $number5 = 1825;
+
+  
+  if ($mop == $number1) {
+
+      $modetag = "M";
+      $contractamount = "27600";
+      $price = "460";
+
+   
+    
+    } elseif ($mop  == $number2) {
+    
+      $modetag = "Q";
+      $contractamount = "25800";
+      $price = "1290";
+    
+    }  elseif ($mop  == $number3) {
+      $modetag = "SA";
+      $price = "2460";
+      $contractamount = "24600";
+      
+    }  elseif ($mop  == $number4) {
+      $modetag = "A";
+      $price = "4800";
+      $contractamount = "24000";
+      
+    
+    }  elseif ($mop  == $number5) {
+      $modetag = "SC";
+      $contractamount = "22080";
+      $price = "22080";
+     
+    } 
+    else {
+        echo "";
+       
+    }
+
+  
+  }  elseif ($productall  == $product3) {
+   
+    $product = "SS";
+    $modetag = "M";
+    $contractamount = "15000";
+    $price = "250";
+
+
+
+  }  elseif ($productall  == $product4) {
+    
+    $product = "SSP1";
+    $modetag = "M";
+    $contractamount = "21000";
+    $price = "350";
+  
+
+  } else {
+      echo "";
+     
+  }
+
+
+
+
+
+   
 
 
 
@@ -78,7 +177,7 @@ if (isset($_POST['save']))
     $crelation = $_POST['crelation'];
 
     $coordinator = $_POST['coordinator'];
-    $contractamount = $_POST['contractamount'];
+    
     $status = $_POST['status'];
     $installment = "0";
    

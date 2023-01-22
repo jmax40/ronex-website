@@ -3,7 +3,7 @@ function searchTable() {
     var input, filter, found, table, tr, td, i, j;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
+    table = document.getElementById("data-table");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td");
@@ -20,3 +20,6 @@ function searchTable() {
         }
     }
 }
+
+
+

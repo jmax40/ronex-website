@@ -358,16 +358,11 @@ $add ="1";
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
 								<td class="text-center"><?php echo $row['id']; ?></td>
-								<td class="text-center"><?php echo $row['fname']; ?>
-								<?php echo $row['mname']; ?>
-								<?php echo $row['lname']; ?></td>
-
-								<td class="text-center"><?php echo $row['address']; ?></td>
-                              
+								<td class="text-center"><?php echo $row['fullname']; ?></td>
 								<td class="text-center"><?php echo $row['branch']; ?></td>
 							
                                
-                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> MCR</a></td>
+                                <td class="text-center"><a href="AgentMCR.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> MCR</a></td>
                        
 								
 								

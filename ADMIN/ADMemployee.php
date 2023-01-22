@@ -1,16 +1,5 @@
 
 
-<?php 
-
-require_once'process.php';
-$query = "SELECT * from member ORDER BY id DESC LIMIT 1;";
-$result = $mysqli->query($query);
-$row =$result->fetch_assoc();
-$idmember = $row['id'];
-$add ="1";
-
-
-?>
 
 
 <!DOCTYPE html>
@@ -33,10 +22,49 @@ $add ="1";
    
    <script type="text/javascript" src="assets/js/member.js"></script>
 
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<script>
+
+// search of data table
+$(document).ready(function(){
+$("#search").on("keyup", function() {
+  var value = $(this).val().toLowerCase();
+  $("#data-table tr").filter(function() {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  });
+});
+});
+</script>
+
 
 
 </head>
 
+<style>
+.table-scroll {
+  overflow: auto;
+  max-height: 200px;
+}
+.popup-container{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    z-index: 9999;
+}
+.popup-container.visible{
+    display: block;
+}
+
+</style>
 <body>
 
 <?php require_once'process.php'; ?>
@@ -339,14 +367,16 @@ $add ="1";
              
             <img src="img/heading.png" alt="image">
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD STAFF </button>  <br> <br>
+<label> Search: </label> <input id='search' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD STAFF </button>  <br> <br>
 
 
-   
+ 
 
+Pages: <div  id="pagination"> </div>
 
- <table class="table table-bordered" id='myTable'>
+ <table  class="table table-bordered" id='data-table'>
 										
+ <tbody id="data-table-body">
                                 <th >Staff No.</th>
 								<th >Name</th>
                                 <th >Age</th>
@@ -362,9 +392,8 @@ $add ="1";
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
 								<td class="text-center"><?php echo $row['id']; ?></td>
-								<td class="text-center"><?php echo $row['fname']; ?>
-								<?php echo $row['mname']; ?>
-								<?php echo $row['lname']; ?></td>
+								<td class="text-center"><?php echo $row['fullname']; ?>
+								</td>
                                 <td class="text-center"><?php echo $row['age']; ?></td>
 								<td class="text-center"><?php echo $row['address']; ?></td>
                                 <td class="text-center"><?php echo $row['branch']; ?></td>
@@ -379,12 +408,82 @@ $add ="1";
 							</tr>
 						<?php endwhile; ?>
 
+                            </tbody>
+                            </table>
+
+
+<script>
+// Initialize the current page and number of rows per page
+var currentPage = 1;
+var rowsPerPage = 40;
+
+// Get the total number of rows in the table
+var totalRows = document.getElementById("data-table-body").rows.length;
+
+// Calculate the total number of pages
+var totalPages = Math.ceil(totalRows / rowsPerPage);
+
+// Function to handle pagination
+function paginate() {
+  // Determine the start and end row for the current page
+  var startRow = (currentPage - 1) * rowsPerPage;
+  var endRow = startRow + rowsPerPage;
+
+  // Hide all rows in the table
+  var rows = document.getElementById("data-table-body").rows;
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].style.display = "none";
+  }
+
+  // Show only the rows for the current page
+  for (var i = startRow; i < endRow; i++) {
+    if (i < totalRows) {
+      rows[i].style.display = "";
+    }
+  }
+
+  // Generate the pagination buttons
+  var pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+  for (var i = 1; i <= totalPages; i++) {
+    var button = document.createElement("button");
+    button.innerHTML = i;
+    if (i === currentPage) {
+      button.classList.add("active");
+    }
+    button.addEventListener("click", function() {
+      currentPage = Number(this.innerHTML);
+      paginate();
+    });
+    pagination.appendChild(button);
+  }
+}
+
+// Call the paginate function to initialize the pagination
+paginate();
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 						
- </table>
+
 
 
                     <div class="col-md-12">
@@ -424,9 +523,7 @@ $add ="1";
                 
                 
                  
-        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
-        		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname"></span></p>
+        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fullname"></span></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" name ="birthdate" style="width:270px;"  name ="edate"></input></p>
 
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="age"></span></p>
@@ -442,9 +539,31 @@ $add ="1";
                                     </span></p>
                                </div>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Username:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="username"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; password:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="password" name="password"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Re-type:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="password" name="cpassword"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; password:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" id="password1" type="password" name="password"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Re-type:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="password"  name="cpassword" id="password2" ></span></p>
+                 <input type="checkbox" id="showpassword" onclick="showPassword()"> Show Password
                
+
+
+                <script>
+
+
+function showPassword() {
+    var checkBox = document.getElementById("showpassword");
+    var password1 = document.getElementById("password1");
+    var password2 = document.getElementById("password2");
+    if (checkBox.checked == true){
+        password1.type = "text";
+        password2.type = "text";
+    } else {
+        password1.type = "password";
+        password2.type = "password";
+    }
+}
+</script>
+
+
+
 
                 <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Branch:<label style="color: red;font-size:20px;">*<select name = "branch" style="width:270px;">
@@ -466,18 +585,24 @@ $add ="1";
                                       
                                     </select>
                                     </span></p>
-                               </div>
-                
-                              
+           
+
+
+
 		                                                      	      		
          </center>
 
       </div>
       <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Submit </button>&nbsp;
+       <button type="submit"  class="btn btn-success" name="save" > Submit </button>&nbsp;
         <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
       </div>
       </div> 
+
+
+
+
+      
        </form>
 
 
