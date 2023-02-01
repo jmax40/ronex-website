@@ -1,3 +1,20 @@
+
+<?php
+    // Connect to the database
+    $conn = mysqli_connect("localhost", "root", "123456", "db_ronex");
+
+    // Fetch the data from the database
+    $query = "SELECT fullname FROM employee where position = 'Agent' ";
+    $result = mysqli_query($conn, $query);
+
+    // Convert the data into an array
+    $options = array();
+    while($row = mysqli_fetch_assoc($result)) {
+        $options[] = $row;
+    }
+?>
+
+
 <?php 
 
 	require_once'process.php';
@@ -8,6 +25,7 @@
 	{
     $No = $row['id'];
 	$edate = $row['edate'];
+  $product = $row['product'];
 	$mop = $row['mop'];
 	$fname =$row['fname'];
 	$mname = $row['mname'];
@@ -48,17 +66,17 @@
 			<div class="col-lg-6 m-auto">
 				<div class="card mt-5">
 					<div class="card-title">
-						<h3 class="bg-success text-white text-center py-3"> Members Information</h3>
+						<h3 class="bg-success text-white text-center py-3"> Edit Maharlika Information</h3>
 					</div>
 					<div class="card-body">
 						<form action="update.php?id=<?php echo $No ?>" method="post">
 				>    
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  value="<?php echo $edate ?>"></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop" value="<?php echo $mop ?>"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M.O.P<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop" value="<?php echo $mop ?>"></span></p>
 
-                 
-        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname" value="<?php echo $fname ?>"></span></p>
-        		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname" value="<?php echo $mname ?>"></span></p>
+                <input type="hidden" name="product" value="<?php echo $product ?>"/> 
+        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname" value="<?php echo $fname ?>"></span></p>
+        		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname" value="<?php echo $mname ?>"></span></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname" value="<?php echo $lname ?>"></span></p>
                 
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy" value="<?php echo $brgy ?>"></span></p>
@@ -95,7 +113,7 @@
 
 
 
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer" value="<?php echo $payer ?>"></span></p>
+                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer" value="<?php echo $payer ?>"></span></p>
                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact" value="<?php echo $pcontact ?>"></span></p>
 
 
@@ -104,8 +122,8 @@
                           
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $bfname?>"></span></p>
         	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $blname ?>"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $bage ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $brelationship ?>"></span></p>
+        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $bage ?>"></span></p>
+                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $brelationship ?>"></span></p>
                  
 
 
@@ -114,20 +132,24 @@
 
                  <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $b2fname?>"></span></p>
         	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $b2lname ?>"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age" value="<?php echo $b2age ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $b2relationship ?>"></span></p>
+        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="b2age" value="<?php echo $b2age ?>"></span></p>
+                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $b2relationship ?>"></span></p>
                  
 
 
 
-                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1" <?php if ($coordinator == 'Agent name 1') echo ' selected="selected"'; ?>>Agent name 1</option>
-                                      <option value="Agent name 2"<?php if ($coordinator == 'Agent name 2') echo ' selected="selected"'; ?>>Agent name 2</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
+    
+                               
+                 <div class="small" style="display: flex; flex-direction: row;">
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*</label></span>
+                <select id="search" value="<?php echo $coordinator ?>" name = "coordinator" style="width:270px;color: red;font-size:20px;"  >
+                <?php foreach ($options as $option) { ?>
+                <option value="<?= $option['fullname']?>" <?php echo ($coordinator == $option['fullname']) ? 'selected' : ''; ?>><?= $option['fullname'] ?></option>
+                <?php } ?> 
+            </select>
+            </p>
+           </div>
+
         		                                                         	      		
          </center>
 

@@ -293,7 +293,7 @@ $add ="1";
                                 <a   href="Maharlika.php">Maharlika</a>
                             </li>
                             <li>
-                                <a  class="active-menu" href="LaFamilia.php">La Famillia</a>
+                                <a   href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
                                 <a  href="Seniorsafira.php">Senior Safira</a>

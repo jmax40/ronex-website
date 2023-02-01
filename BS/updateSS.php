@@ -35,7 +35,7 @@
 
 		if ($result) 
 		{
-			header("location:Maharlika.php");
+			header("location:Seniorsafira.php");
 		}
 		else
 		{

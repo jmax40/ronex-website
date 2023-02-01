@@ -1,3 +1,19 @@
+
+<?php
+    // Connect to the database
+    $conn = mysqli_connect("localhost", "root", "123456", "db_ronex");
+
+    // Fetch the data from the database
+    $query = "SELECT fullname FROM employee where position = 'Agent' ";
+    $result = mysqli_query($conn, $query);
+
+    // Convert the data into an array
+    $options = array();
+    while($row = mysqli_fetch_assoc($result)) {
+        $options[] = $row;
+    }
+?>
+
 <?php 
 
 	require_once'process.php';
@@ -7,6 +23,7 @@
 	while ($row=mysqli_fetch_assoc($result))
 	{
     $No = $row['id'];
+  $product = $row['product'];
 	$edate = $row['edate'];
 	$mop = $row['mop'];
 	$fname =$row['fname'];
@@ -49,7 +66,7 @@
 						<h3 class="bg-success text-white text-center py-3"> Members Information</h3>
 					</div>
 					<div class="card-body">
-						<form action="update.php?id=<?php echo $No ?>" method="post">
+						<form action="updateSS.php?id=<?php echo $No ?>" method="post">
 				>    
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  value="<?php echo $edate ?>"></input></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop" value="<?php echo $mop ?>"></span></p>
@@ -68,7 +85,7 @@
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation" value="<?php echo $occupation ?>"></span></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact" value="<?php echo $contact ?>"></span></p>
                 
-                
+                <input type="hidden" name="product" value="<?php echo $product ?>"/> 
                 <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
                                       <option value="Single" <?php if ($type == 'Single') echo ' selected="selected"'; ?>>Single</option>
@@ -108,14 +125,15 @@
 
 
 
-                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1" <?php if ($coordinator == 'Agent name 1') echo ' selected="selected"'; ?>>Agent name 1</option>
-                                      <option value="Agent name 2"<?php if ($coordinator == 'Agent name 2') echo ' selected="selected"'; ?>>Agent name 2</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
+                 <div class="small" style="display: flex; flex-direction: row;">
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*</label></span>
+                <select id="search" value="<?php echo $coordinator ?>" name = "coordinator" style="width:270px;color: red;font-size:20px;"  >
+                <?php foreach ($options as $option) { ?>
+                <option value="<?= $option['fullname']?>" <?php echo ($coordinator == $option['fullname']) ? 'selected' : ''; ?>><?= $option['fullname'] ?></option>
+                <?php } ?> 
+            </select>
+            </p>
+           </div>
         		                                                         	      		
          </center>
 

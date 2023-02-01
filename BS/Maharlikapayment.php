@@ -1,3 +1,5 @@
+
+
 <?php 
 $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error($mysqli));
   $No = $_GET['GetID'];
@@ -8,6 +10,7 @@ $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error
    
   $No = $row['id'];
   $idmember = $row['idmember'];
+  $idmemberdisplay = $row['idmember'];
   $mop = $row['mop'];
   $due_date = $row['mop'];
 	$edate = $row['edate'];
@@ -23,7 +26,16 @@ $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error
   $contractamount = $row['contractamount'];
   $value_from_db = "13";
   $modetag = $row['modetag'];
+  $product = $row['product'];
 
+
+
+
+
+
+
+
+  
 
 
 
@@ -96,13 +108,13 @@ if ($conn->connect_error) {
 
  // getting user id from the querystring
 
-$sql = "SELECT SUM(price) as total FROM payment WHERE idmember = '$idmember' ";
+$sql = "SELECT SUM(amount) as total FROM payment WHERE idmember = '$idmember' ";
 $result1 = $conn->query($sql);
 
 if ($result1->num_rows > 0) {
     // output data of each row
     while($row1 = $result1->fetch_assoc()) {
-        $resultprice = $row1["total"];
+        $resultprice = $row1["total"] ? $row1["total"] : 0;
     }
 } else {
     
@@ -110,7 +122,6 @@ if ($result1->num_rows > 0) {
 
 $conn->close();
 ?>
-
 
 
 
@@ -132,21 +143,40 @@ if ($conn->connect_error) {
 
  // getting user id from the querystring
 
- $sql = "SELECT COUNT(installment) as total FROM payment WHERE idmember = '$idmember' ";
- $result = mysqli_query($conn, $query);
- $count = mysqli_fetch_row($result)[0];
+ $sql = "SELECT SUM(installment) as total FROM payment WHERE idmember = '$idmember' ";
+$result1 = $conn->query($sql);
 
- 
+if ($result1->num_rows > 0) {
+    // output data of each row
+    while($row1 = $result1->fetch_assoc()) {
+        $installment = $row1["total"] ? $row1["total"] : 0;
+    }
+} else {
+    
+}
+
+$conn->close();
 ?>
 
-
-
 <?php 
-	 require_once'connection.php';
-		$result = $mysqli->query("SELECT * FROM payment where idmember = '$idmember' ") or die($mysqli->error);
-	
-	
-	?>
+$conn = mysqli_connect('localhost','root','123456','db_ronex');
+
+$query = "SELECT * FROM payment WHERE No ='$No' ORDER BY duedate DESC LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+$input_field = '';
+
+if (mysqli_num_rows($result) > 0) {
+  $row = mysqli_fetch_assoc($result);
+  $duedate = date('Y-m-d', strtotime($row['duedate']. ' + 1 day'));
+  $input_field = '<p><input type="text" id="current_date" value="' .$duedate. '"></p>';
+} else {
+  $input_field = '<p><input type="text" id="current_date" value="' .$edate. '"></p>';
+}
+
+mysqli_close($conn);
+?>
+
 
 
 
@@ -187,6 +217,12 @@ if ($conn->connect_error) {
 <?php require_once'process.php'; ?>
 
 
+<?php 
+	    require_once'connection.php';
+		$result = $mysqli->query("SELECT * FROM payment where idmember ='$idmember'") or die($mysqli->error);
+	
+	
+	?>
 
 
 
@@ -428,18 +464,33 @@ if ($conn->connect_error) {
             
              
              
-          <i class="fa-sharp fa-solid fa-magnifying-glass"></i> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > ADD PAYMENT NOW </button>  <br> <br>
+
+   
+             
+          <div style="text-align: left;">
+             &nbsp;&nbsp;&nbsp;&nbsp;
+  <i class="fa-sharp fa-solid fa-magnifying-glass fa-2x"></i>
+  <input id='myInput' onkeyup='searchTable()' type='text' style="height:40px; width:300px; text-align:left">
+  &nbsp;&nbsp;
+  <a class="fa-solid fa-square-plus fa-2x" data-toggle='modal' href='#Useradd' > </a>
+  &nbsp;&nbsp;<i class="fa-sharp fa-solid fa-print fa-2x" style="color: green;" onclick="printTable()"></i>
+  &nbsp;&nbsp;<i class="fa-solid fa-file-excel fa-2x" style="color: green;" onclick="exportExcel()"></i>
+  
+<br>
+  
+ 
+<br>
  <table class="table table-bordered" id='myTable'>
 										
                             <th >Date</th>
 								<th >Or No</th>
 								<th >Ins. No</th>
 								<th >Plan type </th>
-								<th >Collected Comm</th>
-								<th >Ncomm</th>
-								<th >Comm</th>
-                                <th >Collection Allowance</th>	
-                                <th >Collection</th>							
+                                <th >Payment</th>
+                                <th >balance</th>
+                                <th >Delete</th>
+						
+													
 							</tr>
 
                             <?php 
@@ -449,26 +500,60 @@ if ($conn->connect_error) {
 							<td class="text-center"><?php echo $row['ornumber']; ?></td>
                             <td class="text-center"><?php echo $row['installment'];?></td>
                             <td class="text-center"><?php echo $row['modetag'];?></td>
+                            <td class="text-center"><?php echo $row['amount'];?></td>
+                            <td class="text-center"><?php echo $row['balance'];?></td>
                           
-								
-
-
-
-
-                                <td class="text-center"><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelM.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a href="Maharlikapay.php?GetID=<?php echo $row['id'] ?>" class="btn btn-danger"  >Pay</a></td>
+						
+                                <td class="text-center"> <a href="" class="fa-solid fa-trash fa-2x" style="color: red;" ></a> </td>
+	
 								
 								
 							</tr>
-						<?php endwhile; ?>
-
-
-
-
-
-						
+						<?php endwhile; ?>				
  </table>
+
+
+ <script>
+
+function searchTable() {
+    // Get the input field value
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Get all cells in the current row
+      td = tr[i].getElementsByTagName("td");
+      var match = false;
+  
+      // Check if the row is a heading row
+      if (tr[i].getElementsByTagName("th").length > 0) {
+        tr[i].style.display = "";
+        continue;
+      }
+  
+      // Loop through all the table cells in the current row
+      for (var j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              match = true;
+              break;
+          }
+      }
+      if (match) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+
+ </script>
 
 
                     <div class="col-md-12">
@@ -499,43 +584,146 @@ if ($conn->connect_error) {
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="insertpayment.php?id=<?php echo $No ?>" enctype='multipart/form-data' style="width: 98%;">        		s
+        		<form method="post" action="insertpayment.php" enctype='multipart/form-data' style="width: 98%;">        		s
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">OR NUMBER:<label style="color: red;font-size:20px;"></label><input style="width:270px;" type="text" placeholder="Input OR Number" name="ornumber" ></span></p>
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;   AMOUNT:<label style="color: red;font-size:20px;"></label><input style="width:270px;" type="text" value="<?php echo $price; ?>" placeholder="Input Amount " id="tot2" name="amount" ></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INS:<label style="color: red;font-size:20px;"> <input style="width:270px;" type="number" name="installment" id="value2"  value ="1" min="1" oninput="multiply();calculate_future_date();"></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INS:<label style="color: red;font-size:20px;"> <input style="width:270px;" type="number" name="installment" id="value2"  value ="1"  oninput="multiply();calculate_future_date();"></p>
                 <input type="hidden" id="date" name="effectdate" value="<?php echo $edate ?>">
                 <input type="hidden" name="fullname" value="<?php echo $fname. " " .$mname." ".$lname ?>"/> 
                 <input type="hidden"  name="idmember" value="<?php echo $idmember ?>">
                 <input type="hidden" name="address" value="<?php echo $brgy.' '.$city.' '.$prov; ?>">
                 <input type="hidden" id="<?php echo $mop ?>" value="<?php echo $mop ?>" oninput="calculate_future_date();"></p>
-                 <p> <input type="hidden" id="current_date" value="<?php echo $edate ?>"></p>
+                <?php echo $input_field; ?>
                  <p> <input type="hidden" name="duedate" id="future_date"></p>
            
 <?php
 // Check how many days past the due date we are
-if ($difference_in_days > 1 && $difference_in_days <= 60) {
-    echo '<input type="hidden"name="60" value ="60" >';
+if ($difference_in_days > 1 && $difference_in_days <= 30) {
+    echo '<input type="hidden" name="aging" value ="30" >';
+    echo '<input type="hidden" name="dueprice" value ="'.$price.'" >';
+} elseif ($difference_in_days > 31 && $difference_in_days <= 60) {
+    echo '<input type="hidden" name="aging" value ="30" >';
+    echo '<input type="hidden" name = "dueprice" value ="'.$price.'" >';
 } elseif ($difference_in_days > 90 && $difference_in_days <= 1000) {
     echo '<input type="hidden" name = "aging" value ="Deactivate" >';
-} else {
-    echo '<input type="hidden" name ="aging" value="Active">';
+    echo '<input type="hidden" name="dueprice" value ="'. (2 * $price) .'" >';
+}else {
+    echo '<input type="hidden" name ="aging" value="0">';
+    echo '<input type="hidden" name="dueprice" value ="'.$price.'" >';
 }
 
 ?>
+
+
 <?php
-if (empty($installment) || !is_numeric($installment)) {
-    $installment = 0;
-}
-if ($installment >= 0 && $installment <= 12) {
-    echo '<input type="hidden" name="comm" value="'.$price.'"/>';
-    echo '<input type="hidden" name="ncomm" value=""/>';
-} elseif ($installment >= 12 && $installment <= 1000) {
-    echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
-    echo '<input type="hidden" name="comm" value=""/>';
-} else {
-    echo '<input type="hidden" name ="aging" value="Active">';
-}
+
+
+$number1 = 30;
+$number2 = 90;
+$number3 = 180;
+$number4 = 360;
+$number5 = 1825;
+
+
+
+
+
+if ($mop == $number1) {
+   
+    if (empty($installment) || !is_numeric($installment)) {
+        $installment = 0;
+    }
+    if ($installment >= 0 && $installment <= 12) {
+        echo '<input type="hidden" name="comm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="ncomm" value=""/>';
+    } elseif ($installment >= 12 && $installment <= 1000) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } else {
+        echo '<input type="hidden" name ="aging" value="Active">';
+    }
+    
+
+
+  
+  } elseif ($mop  == $number2) {
+   
+  
+    if (empty($installment) || !is_numeric($installment)) {
+        $installment = 0;
+    }
+    if ($installment >= 0 && $installment <= 4) {
+        echo '<input type="hidden" name="comm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="ncomm" value=""/>';
+    } elseif ($installment >= 4 && $installment <= 1000) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } else {
+        echo '<input type="hidden" name ="aging" value="Active">';
+    }
+    
+ 
+  
+  }  elseif ($mop  == $number3) {
+
+    if (empty($installment) || !is_numeric($installment)) {
+        $installment = 0;
+    }
+    if ($installment >= 0 && $installment <= 2) {
+        echo '<input type="hidden" name="comm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="ncomm" value=""/>';
+    } elseif ($installment >= 2 && $installment <= 1000) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } else {
+        echo '<input type="hidden" name ="aging" value="Active">';
+    }
+  
+
+  
+    
+  }  elseif ($mop  == $number4) {
+    
+    if (empty($installment) || !is_numeric($installment)) {
+        $installment = 0;
+    }
+    if ($installment >= 0 && $installment <= 1) {
+        echo '<input type="hidden" name="comm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="ncomm" value=""/>';
+    } elseif ($installment >= 1 && $installment <= 1000) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } else {
+        echo '<input type="hidden" name ="aging" value="Active">';
+    }
+  
+
+  
+  }  elseif ($mop  == $number5) {
+   
+    if (empty($installment) || !is_numeric($installment)) {
+        $installment = 0;
+    }
+    if ($installment >= 0 && $installment <= 1) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } elseif ($installment >= 1 && $installment <= 1000) {
+        echo '<input type="hidden" name="ncomm" value="'.$price.'"/>';
+        echo '<input type="hidden" name="comm" value=""/>';
+    } else {
+        echo '<input type="hidden" name ="aging" value="Active">';
+    }
+   
+   
+  } 
+  else {
+      echo "";
+     
+  }
+
+
 ?>
+
 
 <script>
   calculate_future_date();
@@ -560,6 +748,13 @@ if ($installment >= 0 && $installment <= 12) {
    
   }
 </script>
+
+
+
+
+
+
+
 <input type="hidden" value="<?php echo $price; ?>" id="tot">
 <input type="hidden" name="price" value="<?php echo $price; ?>" id="tot1">
 <input type="hidden" name="total" value="<?php echo  $contractamount; ?>" id="tot">
@@ -567,10 +762,18 @@ if ($installment >= 0 && $installment <= 12) {
 <input type="hidden" name ="walkinginstallment" value="<?php echo $installment; ?>">
 <input type="hidden"  name="minusprice" value="<?php echo $resultprice ?>">
 <input type="hidden"  name="coordinator" value="<?php echo $coordinator ?>">
-<input type="text" id="date" name="date" value="<?php echo date('Y-m-d'); ?>">
+<input type="hidden"  name="date" id="datenow">
 <input type="hidden"  name="coordinator" value="<?php echo $coordinator ?>">
-<input type="text"  name="modetag" value="<?php echo $modetag ?>">
+<input type="hidden"  name="modetag" value="<?php echo $modetag ?>">
+<input type="hidden"  name="No" value="<?php echo $No ?>">
+<input type="hidden"  name="product" value="<?php echo $product ?>">
 
+
+<script>
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  document.getElementById("datenow").value = date;
+</script>
 
          </center>
 

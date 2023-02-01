@@ -1,21 +1,41 @@
 
 
-<?php 
+<?php
+    // Connect to the database
+    $conn = mysqli_connect("localhost", "root", "123456", "db_ronex");
 
-require_once'process.php';
-$query = "SELECT * from member ORDER BY id DESC LIMIT 1;";
-$result = $mysqli->query($query);
-$row =$result->fetch_assoc();
-$idmember = $row['id'];
-$add ="1";
+    // Fetch the data from the database
+    $query = "SELECT fullname,branch FROM employee where position = 'Agent' ";
+    $result = mysqli_query($conn, $query);
 
-
+    // Convert the data into an array
+    $options = array();
+    while($row = mysqli_fetch_assoc($result)) {
+        $options[] = $row;
+        $branch[] = $row;
+        
+    }
 ?>
 
 
+
+<?php
+$servername='localhost';
+$username='root';
+$password='123456';
+$dbname = "db_ronex";
+$conn=mysqli_connect($servername,$username,$password,"$dbname");
+if(!$conn){
+die('Could not Connect My Sql:' .mysql_error());
+}
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+
+
+
+
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,11 +53,15 @@ $add ="1";
    
    <script type="text/javascript" src="assets/js/member.js"></script>
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 
 
 </head>
 
+
 <body>
+
+
 
 <?php require_once'process.php'; ?>
 <?php require_once'displaySS.php'; ?>
@@ -287,23 +311,24 @@ $add ="1";
                     </li>
 					
 
+
                     <li>
                         <a href="#"><i class="fa fa-sitemap"></i> PRODUCT <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a   href="Maharlika.php">Maharlika</a>
                             </li>
                           <li>
                                 <a  href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
-                                <a class="active-menu" href="Seniorsafira.php">Senior Safira</a>
+                                <a  class="active-menu" href="Seniorsafira.php">Senior Safira</a>
                             </li>
                             <li>
                                 <a href="#">Promo<span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     <li>
-                                        <a href="#">Safira 250</a>
+                                        <a href="Safirap1.php">Safira 250</a>
                                     </li>
                                     <li>
                                         <a href="#">Third Level Link</a>
@@ -334,23 +359,29 @@ $add ="1";
 
 			 <div class="row">
              
-             <img src="img/heading.png" alt="image"> 
+             <img src="img/heading.png" alt="image">
+             
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD SENIOR SAFIRA MEMBER </button>  <br> <br>
-
-
-   
-
-
+             <i class="fa-sharp fa-solid fa-magnifying-glass fa-2x"> </i>  <input id='myInput' onkeyup='searchTable()'style="height:40px; width:300px; text-align:left" type='text'> &nbsp;&nbsp;    <a class="fa-solid fa-user-plus  fa-2x" data-toggle='modal' href='#Useradd' ></a>  &nbsp;&nbsp;
+              <i class="fa-solid fa-file-excel fa-2x" style="color: green;" onclick="exportExcel()"></i></a>  <br> 
+             <br>
+   <div  id="pagination"> </div>
+            
  <table class="table table-bordered" id='myTable'>
+
+ <tbody id="data-table-body">
 										
-                            <th >CN.No</th>
+                     
+ <th >CN.No</th>
 								<th >Name</th>
 								<th >Address</th>
 								<th >MOP </th>
 								<th >Effect Date</th>
 								<th >Status</th>
 								<th >Agent</th>
+                                <th >Edit</th>
+                                <th >Delete</th>
+                                <th >Payment</th>
 							
 							</tr>
 
@@ -364,23 +395,164 @@ $add ="1";
 								<td class="text-center"><?php echo $row['brgy']; ?>
                                 <?php echo $row['city']; ?>
 								<?php echo $row['prov']; ?></td>
-								<td class="text-center"><?php echo $row['mop']; ?></td>
+								<td class="text-center"><?php echo $row['modetag']; ?></td>
                                 <td><?php echo $row['edate']; ?></td>
 								<td><?php echo $row['type']; ?></td>
 								<td class="text-center"><?php echo $row['coordinator']; ?>
-                                <td><a href="editSS.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td> <a href="delete.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a class="btn btn-primary mb-2" data-toggle='modal' href='#Paynow'>Pay</a></td>
-								
+                                <td class="text-center"><a href="editSS.php?GetID=<?php echo $row['id'] ?>" class="fa-sharp fa-solid fa-user-pen fa-2x" ></a></td>
+                                <td class="text-center"> <a href="DelSS.php?Del=<?php echo $row['id'] ?>" class="fa-solid fa-trash fa-2x" style="color: red;"></a> </td>
+                                <td class="text-center"><a href="Maharlikapayment.php?GetID=<?php echo $row['id'] ?>" class="fa-sharp fa-solid fa-money-bill-1-wave fa-2x" style="color: green;"></a></td>
+                                         
 							</tr>
-						<?php endwhile; ?>
+						<?php endwhile; ?>	
 
-
-
-
+                        </tbody>
 
 						
  </table>
+
+
+
+
+ 
+ <script>
+
+
+
+function exportExcel() {
+    var table = document.getElementById("myTable");
+    var html = table.outerHTML;
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+}
+
+
+var currentPage = 1;
+var rowsPerPage = 31;
+
+// Get the total number of rows in the table
+var totalRows = document.getElementById("data-table-body").rows.length;
+
+// Calculate the total number of pages
+var totalPages = Math.ceil(totalRows / rowsPerPage);
+
+// Function to handle pagination
+function paginate() {
+  // Determine the start and end row for the current page
+  var startRow = (currentPage - 1) * rowsPerPage;
+  var endRow = startRow + rowsPerPage;
+
+  // Hide all rows in the table
+  var rows = document.getElementById("data-table-body").rows;
+  for (var i = 0; i < rows.length; i++) {
+    if (i >= startRow && i < endRow) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  // Generate the pagination dropdown
+  var pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  var label = document.createElement("label");
+  label.innerHTML = " &nbsp;&nbsp;&nbsp; PAGES:  ";
+  pagination.appendChild(label);
+
+  var select = document.createElement("select");
+  select.addEventListener("change", function() {
+    currentPage = Number(this.value);
+    paginate();
+  });
+  for (var i = 1; i <= totalPages; i++) {
+    var option = document.createElement("option");
+    option.value = i;
+    option.text = i;
+    if (i === currentPage) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+  pagination.appendChild(select);
+
+
+  var prevButton = document.createElement("button");
+  prevButton.innerHTML = "Back";
+  prevButton.addEventListener("click", function() {
+    if (currentPage > 1) {
+      currentPage--;
+      paginate();
+    }
+  });
+  pagination.appendChild(prevButton);
+  // Add next page button
+  var nextButton = document.createElement("button");
+  nextButton.innerHTML = "Next";
+  nextButton.addEventListener("click", function() {
+    if (currentPage < totalPages) {
+      currentPage++;
+      paginate();
+    }
+  });
+  pagination.appendChild(nextButton);
+
+  // Add back page button
+
+}
+
+// Call the paginate function to initialize the pagination
+paginate();
+
+
+
+
+
+
+
+
+
+
+
+function searchTable() {
+    // Get the input field value
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Get all cells in the current row
+      td = tr[i].getElementsByTagName("td");
+      var match = false;
+  
+      // Check if the row is a heading row
+      if (tr[i].getElementsByTagName("th").length > 0) {
+        tr[i].style.display = "";
+        continue;
+      }
+  
+      // Loop through all the table cells in the current row
+      for (var j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              match = true;
+              break;
+          }
+      }
+      if (match) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+
+ </script>
+
 
 
                     <div class="col-md-12">
@@ -406,117 +578,153 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>ADD SENIOR SAFIRA MEMBER</center></h4>
+        <center>ADD MAHARLIKA MEMBER </center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="Seniorsafira.php" enctype='multipart/form-data' style="width: 98%;">        		
-
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/>
+        		
+						<form method="post" action="Seniorsafira.php" enctype='multipart/form-data' style="width: 98%;">        		
                  
-
-                <input type="hidden" name="product" value="SS"/> 
+                 <input type="hidden" name="product" value="SS"/> 
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
+                    <div class="small" >
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOP:<label style="color: red;font-size:20px;">*<select name = "mop" style="width:270px;">
+                                          <option value="30">M</option>                                
+                                        </select>
+                                        </span></p>
+                                   </div>
+                     
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname"></span></p>
+                    
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Mun:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="city"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Prov:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="prov"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" style="width:270px;"  name ="birthdate"></span></p>
+    
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Religion:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="religion"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation"></span></p>
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact"></span></p>
+                    
+                    
+                    <div class="small" >
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
+                                          <option value="Single">Single</option>
+                                          <option value="Merried">Merried</option>
+                                          <option value="Sepparated">Sepparated</option>
+                                          <option value="Widow">Widow</option>
+                                        </select>
+                                        </span></p>
+                                   </div>
                   
-        		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-
-                 
-        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
-        		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname"></span></p>
-                
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Mun:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="city"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Prov:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="prov"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" style="width:270px;"  name ="birthdate"></span></p>
-
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Religion:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="religion"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact"></span></p>
-                
-                
-                <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
-                                      <option value="Single">Single</option>
-                                      <option value="Merried">Merried</option>
-                                      <option value="Sepparated">Sepparated</option>
-                                      <option value="Widow">Widow</option>
-                                    </select>
-                                    </span></p>
-                               </div>
-              
+                                  
+    
+                                   <div class="small" >
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender:<label style="color: red;font-size:20px;">*<select name = "gender" style="width:270px;">
+                                          <option value="Male">Male</option>
+                                          <option value="Female">Female</option>
+                                          
+                                        </select>
+                                        </span></p>
+                                   </div>
+                  
+    
+    
+    
+                                   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer"></span></p>
+                                  <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact"></span></p>
+    
+    
+                                   <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Claimants <label style="color: red;font-size:20px;"></label>
+    
                               
-
-                               <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender:<label style="color: red;font-size:20px;">*<select name = "gender" style="width:270px;">
-                                      <option value="Male">Male</option>
-                                      <option value="Female">Female</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
-              
-
-
-
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer"></span></p>
-                              <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact"></span></p>
-
-
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Claimants <label style="color: red;font-size:20px;"></label>
-
-                          
-
-                               <input type="hidden" name="bfname" value="NONE"/> 
-                               <input type="hidden" name="blname" value="NONE"/> 
-                               <input type="hidden" name="bage" value="NONE"/> 
-                               <input type="hidden" name="brelationship" value="NONE"/>
-
-                               <input type="hidden" name="b2fname" value="NONE"/> 
-                               <input type="hidden" name="b2lname" value="NONE"/> 
-                               <input type="hidden" name="b2age" value="NONE"/> 
-                               <input type="hidden" name="b2relation" value="NONE"/> 
-                               
-
-
-
-                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cfname"> </span> </p> 
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="clname"></span></p>
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cage"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="crelation"></span></p>
-
-                 
-           
-                 
-                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1">Agent name 1</option>
-                                      <option value="Agent name 2">Agent name 2</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
-
-                               <input type="hidden" name="contractamount" value="21000"/> 
-                               <input type="hidden" name="status" value="Active"/>
-                               
-        		                                                      	      		
-         </center>
-
-      </div>
-      <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Submit </button>&nbsp;
-        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-      </div>
-      </div> 
-       </form>
-
-
-
+    
+                                   <input type="hidden" name="bfname" value="NONE"/> 
+                                   <input type="hidden" name="blname" value="NONE"/> 
+                                   <input type="hidden" name="bage" value="NONE"/> 
+                                   <input type="hidden" name="brelationship" value="NONE"/>
+    
+                                   <input type="hidden" name="b2fname" value="NONE"/> 
+                                   <input type="hidden" name="b2lname" value="NONE"/> 
+                                   <input type="hidden" name="b2age" value="NONE"/> 
+                                   <input type="hidden" name="b2relation" value="NONE"/> 
+                                   
+    
+    
+    
+                     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cfname"> </span> </p> 
+                     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="clname"></span></p>
+                     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="cage"></span></p>
+                     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="crelation"></span></p>
+    
+                     
+               
+                     
+                     <div class="small" >
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Branch:<label style="color: red;font-size:20px;">*<select name = "branch" style="width:270px;">
+                                          <option value="Esperanza" >Esperanza</option>
+                                          <option value="Isulan">Isulan</option>
+                                          <option value="Tacurong">Tacurong</option>
+                                          <option value="Bagumbayan">Bagumbayan</option>
+                                          
+                                        </select>
+                                        </span></p>
+                                   </div>
+                                 
+                     <div class="small" >
+                    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select id="search" name = "coordinator" style="width:270px;">
+                                          <option id="myList"  <?php foreach ($options as $option) { ?>
+                <option value="<?= $option['fullname']?>"><?= $option['fullname'] ?></option>
+            <?php } ?> ></option>
+                                         
+                                        </select>
+                                        </span></p>
+                                   </div>
+    
+    
+    
+    
+    
+                                   <input type="hidden" name="contractamount" value="21000"/> 
+                                   <input type="hidden" name="status" value="Active"/>
+                                   
+                                                                                            
+             </center>
+    
+          </div>
+          <div class="modal-footer">
+           <button type="submit" class="btn btn-success" name="save"> Submit </button>&nbsp;
+            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+          </div>
+          </div> 
+           </form>
+    
+    
+    
+    
   </div>
   </div> 
+
+
+<script>
+  function filterOptions() {
+  var searchTerm = document.getElementById("search").value.toLowerCase();
+  var select = document.getElementById("myList");
+  var options = select.options;
+
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].text.toLowerCase().indexOf(searchTerm) === -1) {
+      options[i].style.display = "none";
+    } else {
+      options[i].style.display = "block";
+    }
+  }
+}
+
+</script>
+
 
 
 
@@ -534,136 +742,98 @@ $add ="1";
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="listmembers.php" enctype='multipart/form-data' style="width: 98%;">        		
+          <form method="post" action="listmembers.php" enctype='multipart/form-data' style="width: 98%;">        		
 
             	
-      	        <p style="margin-bottom:10px;">  
-        	    <span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="La Famillia"<?php echo ($product=='La Famillia')?'checked':'' ?>>&nbsp;La Famillia&nbsp;&nbsp; &nbsp; &nbsp;</span>
-        	    <span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="Maharlika"<?php echo ($product=='Maharlika')?'checked':'' ?>>&nbsp;Maharlika &nbsp; &nbsp;&nbsp;&nbsp;</span>
-        		<span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="Senor Safira"<?php echo ($product=='Senor Safira')?'checked':'' ?>>&nbsp;Senor Safira &nbsp; &nbsp; &nbsp;&nbsp;</span>        		
-        		</p>
-        		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  value='<?php echo $row['fname']
-                 ?>'></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop" value="<?php echo $mop ?>"></span></p>
-
-                 
-        	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname" value="<?php echo $fname ?>"></span></p>
-        		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname" value="<?php echo $mname ?>"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname" value="<?php echo $lname ?>"></span></p>
-                
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy" value="<?php echo $brgy ?>"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Mun:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="city" value="<?php echo $city ?>"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Prov:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="prov" value="<?php echo $prov ?>"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" style="width:270px;"  name ="birthdate" value="<?php echo $birthdate ?>"></span></p>
-
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Religion:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="religion" value="<?php echo $religion ?>" ></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation" value="<?php echo $occupation ?>"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact" value="<?php echo $contact ?>"></span></p>
-                
-                
-                <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
-                                      <option value="Single" <?php if ($type == 'Single') echo ' selected="selected"'; ?>>Single</option>
-                                      <option value="Merried"<?php if ($type == 'Merried') echo ' selected="selected"'; ?>>Merried</option>
-                                      <option value="Sepparated" <?php if ($type == 'Sepparated') echo ' selected="selected"'; ?>>Sepparated</option>
-                                      <option value="Widow" <?php if ($type == 'Widow') echo ' selected="selected"'; ?>>Widow</option>
-                                    </select>
-                                    </span></p>
-                               </div>
-              
-                              
-
-                               <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender:<label style="color: red;font-size:20px;">*<select name = "gender" style="width:270px;">
-                                      <option value="Male" <?php if ($gender == 'Male') echo ' selected="selected"'; ?>>Male</option>
-                                      <option value="Female" <?php if ($gender == 'Female') echo ' selected="selected"'; ?>>Female</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
-              
+<p style="margin-bottom:10px;">  
+<span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="La Famillia"<?php echo ($product=='La Famillia')?'checked':'' ?>>&nbsp;La Famillia&nbsp;&nbsp; &nbsp; &nbsp;</span>
+<span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="Maharlika"<?php echo ($product=='Maharlika')?'checked':'' ?>>&nbsp;Maharlika &nbsp; &nbsp;&nbsp;&nbsp;</span>
+<span style="font-size: 15px; font-weight: bold;"><input type="checkbox" name="product" value="Senor Safira"<?php echo ($product=='Senor Safira')?'checked':'' ?>>&nbsp;Senor Safira &nbsp; &nbsp; &nbsp;&nbsp;</span>        		
+</p>
+       
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  value='<?php echo $row['fname']
+?>'></input></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop" value="<?php echo $mop ?>"></span></p>
 
 
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname" value="<?php echo $fname ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname" value="<?php echo $mname ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="lname" value="<?php echo $lname ?>"></span></p>
 
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer" value="<?php echo $payer ?>"></span></p>
-                              <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact" value="<?php echo $pcontact ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub/Brgy:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brgy" value="<?php echo $brgy ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Mun:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="city" value="<?php echo $city ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City/Prov:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="prov" value="<?php echo $prov ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birthdate:<label style="color: red;font-size:20px;">*</label><input type="date" style="width:270px;"  name ="birthdate" value="<?php echo $birthdate ?>"></span></p>
 
-
-                               <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Benificial/Claimants Information<label style="color: red;font-size:20px;"></label>
-
-                          
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $bfname?>"
-                ></span></p>
-        	     <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $blname ?>"> </span> </p> 
-        	     <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $bage ?>"></span></p>
-                 <p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $brelationship ?>"></span></p>
-                 <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1" <?php if ($coordinator == 'Agent name 1') echo ' selected="selected"'; ?>>Agent name 1</option>
-                                      <option value="Agent name 2"<?php if ($coordinator == 'Agent name 2') echo ' selected="selected"'; ?>>Agent name 2</option>
-                                      
-                                    </select>
-                                    </span></p>
-                               </div>
-        		                                                         	      		
-         </center>
-
-      </div>
-      <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Submit </button>&nbsp;
-        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-      </div>
-      </div> 
-       </form>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Religion:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="religion" value="<?php echo $religion ?>" ></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Occupation:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="occupation" value="<?php echo $occupation ?>"></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="contact" value="<?php echo $contact ?>"></span></p>
 
 
+<div class="small" >
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Civil Status:<label style="color: red;font-size:20px;">*<select name = "type" style="width:270px;">
+                    <option value="Single" <?php if ($type == 'Single') echo ' selected="selected"'; ?>>Single</option>
+                    <option value="Merried"<?php if ($type == 'Merried') echo ' selected="selected"'; ?>>Merried</option>
+                    <option value="Sepparated" <?php if ($type == 'Sepparated') echo ' selected="selected"'; ?>>Sepparated</option>
+                    <option value="Widow" <?php if ($type == 'Widow') echo ' selected="selected"'; ?>>Widow</option>
+                  </select>
+                  </span></p>
+             </div>
 
-  </div>
-  </div>
+            
+
+             <div class="small" >
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender:<label style="color: red;font-size:20px;">*<select name = "gender" style="width:270px;">
+                    <option value="Male" <?php if ($gender == 'Male') echo ' selected="selected"'; ?>>Male</option>
+                    <option value="Female" <?php if ($gender == 'Female') echo ' selected="selected"'; ?>>Female</option>
+                    
+                  </select>
+                  </span></p>
+             </div>
 
 
 
 
-  <div id="Paynow" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content" style="font-size: 14px; font-family: Times New Roman;color:black;">
-      <div class="modal-header" style="background:#222d32">
-        <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>PAYMENT TRANSACTION </center></h4>
-      </div>
+             <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;Name of Payer:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="payer" value="<?php echo $payer ?>"></span></p>
+            <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Contact No:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="pcontact" value="<?php echo $pcontact ?>"></span></p>
 
-      <div class="modal-body" >       	
-      	<center> 
-        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
 
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
+             <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Benificial/Claimants Information<label style="color: red;font-size:20px;"></label>
 
-      	      <input type="hidden" name="product" value="M"/> 
-                  
-        		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp; OR NUMBER:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMOUNT: <label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-          
-        		                                                      	      		
-         </center>
+        
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bfname" value="<?php echo $bfname?>"
+></span></p>
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lastname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="blname"value="<?php echo $blname ?>"> </span> </p> 
+<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="bage" value="<?php echo $bage ?>"></span></p>
+<p ><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Relationship:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="brelationship" value="<?php echo $brelationship ?>"></span></p>
+<div class="small" >
+<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
+                    <option value="Agent name 1" <?php if ($coordinator == 'Agent name 1') echo ' selected="selected"'; ?>>Agent name 1</option>
+                    <option value="Agent name 2"<?php if ($coordinator == 'Agent name 2') echo ' selected="selected"'; ?>>Agent name 2</option>
+                    
+                  </select>
+                  </span></p>
+             </div>
+                                                                         
+</center>
 
-      </div>
-      <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Pay Now </button>&nbsp;
-        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-      </div>
-      </div> 
-       </form>
+</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-success" name="save"> Submit </button>&nbsp;
+<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+</div>
+</div> 
+</form>
 
 
 
   </div>
-  </div> 
+  </div>
+
 
  
+
+
 
 
         

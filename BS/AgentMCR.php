@@ -13,12 +13,6 @@ $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error
 
 
 
-<?php 
-	 require_once'connection.php';
-		$result = $mysqli->query("SELECT * FROM payment where coordinator = '$fullname' ") or die($mysqli->error);
-	
-	
-	?>
 
 
 
@@ -58,6 +52,12 @@ $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error
 
 <?php require_once'process.php'; ?>
 
+<?php 
+	    require_once'connection.php';
+		$result = $mysqli->query("SELECT * FROM payment where coordinator ='$fullname'") or die($mysqli->error);
+	
+	
+	?>
 
 
 
@@ -297,55 +297,120 @@ $mysqli = new mysqli('localhost','root', '123456','db_ronex') or die(mysql_error
 
 			 <div class="row">
              
-            
-             
-             
-             &nbsp;&nbsp;&nbsp;&nbsp;  <i class="fa-sharp fa-solid fa-magnifying-glass"></i> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <br>
-    <br>
-          <table class="table table-bordered" id='myTable'>
-										
-                            <th >No.</th>
-								<th >Effective Date</th>
-								<th >Members Name</th>
-								<th >Due Date </th>
-								<th >Comm.</th>
-								<th >Ncomm</th>
-								<th >Ins.</th>
-                                <th >Aging</th>	
-                                <th >Due</th>
-                                <th >Addres</th>
-                                <th >Balance</th>
-                                <th >Contact No.</th>
-                                <th >Sales Agent</th>
+             <div style="text-align: left;">
+             &nbsp;&nbsp;&nbsp;&nbsp;
+  <i class="fa-sharp fa-solid fa-magnifying-glass fa-2x"></i>
+  <input id='myInput' onkeyup='searchTable()' type='text' style="height:40px; width:300px; text-align:left">
+  &nbsp;&nbsp;<i class="fa-sharp fa-solid fa-print fa-2x" style="color: blue;" onclick="printTable()"></i>
+  &nbsp;&nbsp;<i class="fa-solid fa-file-excel fa-2x" style="color: green;" onclick="exportExcel()"></i>
+  
+</div>
+<br>
+<table class="table table-bordered" id='myTable'>
+  <tr>
+    <th>Effective Date</th>
+    <th>Members Name</th>
+    <th>Due Date </th>
+    <th>MOP </th>
+    <th>Comm.</th>
+    <th>Ncomm</th>
+    <th>Ins.</th>
+    <th>Aging</th>	
+    <th>Due</th>
+    <th>Addres</th>
+    <th>Balance</th>
+    <th>Contact No.</th>
+    <th>Sales Agent</th>
+  </tr>
+  <?php 
+  $total_comm = 0;
+    while ($row=$result->fetch_assoc()): 
+        $total_comm += $row['comm'];?>
+    
+      <tr class="mb-2">
+        <td class="text-center"><?php echo $row['effectdate']; ?></td>
+        <td class="text-center"><?php echo $row['fullname']; ?></td>
+        <td class="text-center"><?php echo $row['duedate'];?></td>
+        <td class="text-center"><?php echo $row['modetag'];?></td>
+        <td class="text-center"><?php echo $row['comm'];?></td>
+        <td class="text-center"><?php echo $row['ncomm'];?></td>
+        <td class="text-center"><?php echo $row['installment'];?></td>
+        <td class="text-center"><?php echo $row['aging'];?></td>
+        <td class="text-center"><?php echo $row['dueprice'];?></td>
+        <td class="text-center"><?php echo $row['address'];?></td>
+        <td class="text-center"><?php echo $row['balance'];?></td>
+        <td class="text-center"><?php echo $row['pcontact'];?></td>
+        <td class="text-center"><?php echo $row['coordinator'];?></td>
+      </tr>
+   
+     
+    <?php endwhile; ?>
+   
+</table>
 
-                                								
-							</tr>
-
-                            <?php 
-							while ($row=$result->fetch_assoc()): ?>
-							<tr class="mb-2">
-                            <td class="text-center"><?php echo $row['idmember']; ?></td>
-                            <td class="text-center"><?php echo $row['effectdate']; ?></td>
-							<td class="text-center"><?php echo $row['fullname']; ?></td>
-                            <td class="text-center"><?php echo $row['duedate'];?></td>
-                            <td class="text-center"><?php echo $row['comm'];?></td>
-                            <td class="text-center"><?php echo $row['ncomm'];?></td>
-                            <td class="text-center"><?php echo $row['installment'];?></td>
-                            <td class="text-center"><?php echo $row['aging'];?></td>
-                            <td class="text-center"><?php echo $row['dueprice'];?></td>
-                            <td class="text-center"><?php echo $row['address'];?></td>
-                            <td class="text-center"><?php echo $row['balance'];?></td>
-                            <td class="text-center"><?php echo $row['pcontact'];?></td>
-                            <td class="text-center"><?php echo $row['coordinator'];?></td>
-							</tr>
-						<?php endwhile; ?>
+        <script>
 
 
 
+function printTable() {
+    var table = document.getElementById("myTable");
+    var printWindow = window.open('', '', 'height=700,width=700');
+    printWindow.document.write('<html><head><title>Table</title>');
+    printWindow.document.write('</head><body >');
+    printWindow.document.write('<img src="img/heading.png" style="width:100%;">');
+    printWindow.document.write(table.outerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
 
 
-						
- </table>
+function searchTable() {
+    // Get the input field value
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Get all cells in the current row
+      td = tr[i].getElementsByTagName("td");
+      var match = false;
+  
+      // Check if the row is a heading row
+      if (tr[i].getElementsByTagName("th").length > 0) {
+        tr[i].style.display = "";
+        continue;
+      }
+  
+      // Loop through all the table cells in the current row
+      for (var j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              match = true;
+              break;
+          }
+      }
+      if (match) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+
+
+function exportExcel() {
+    var table = document.getElementById("myTable");
+    var html = table.outerHTML;
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+}
+</script>
+
 
 
                     <div class="col-md-12">

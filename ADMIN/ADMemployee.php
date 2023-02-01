@@ -372,7 +372,7 @@ $("#search").on("keyup", function() {
 
  
 
-Pages: <div  id="pagination"> </div>
+   <div id="pagination"></div>
 
  <table  class="table table-bordered" id='data-table'>
 										
@@ -391,7 +391,7 @@ Pages: <div  id="pagination"> </div>
                             <?php 
 							while ($row=$result->fetch_assoc()): ?>
 							<tr class="mb-2">
-								<td class="text-center"><?php echo $row['id']; ?></td>
+								<td class="text-center"><?php echo $row['idemployee']; ?></td>
 								<td class="text-center"><?php echo $row['fullname']; ?>
 								</td>
                                 <td class="text-center"><?php echo $row['age']; ?></td>
@@ -401,7 +401,7 @@ Pages: <div  id="pagination"> </div>
 								<td class="text-center"><?php echo $row['username']; ?></td>
                                 <td class="text-center"><?php echo $row['position']; ?></td>
 
-                                <td><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
+                                <td><a href="edit.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> Edit </a></td>
                                
 								
 								
@@ -412,7 +412,7 @@ Pages: <div  id="pagination"> </div>
                             </table>
 
 
-<script>
+ <script>
 // Initialize the current page and number of rows per page
 var currentPage = 1;
 var rowsPerPage = 40;
@@ -442,25 +442,34 @@ function paginate() {
     }
   }
 
-  // Generate the pagination buttons
+  // Generate the pagination dropdown
   var pagination = document.getElementById("pagination");
   pagination.innerHTML = "";
+  
+  var label = document.createElement("label");
+  label.innerHTML = "Pages:  ";
+  pagination.appendChild(label);
+
+  var select = document.createElement("select");
+  select.addEventListener("change", function() {
+    currentPage = Number(this.value);
+    paginate();
+  });
   for (var i = 1; i <= totalPages; i++) {
-    var button = document.createElement("button");
-    button.innerHTML = i;
+    var option = document.createElement("option");
+    option.value = i;
+    option.text = i;
     if (i === currentPage) {
-      button.classList.add("active");
+      option.selected = true;
     }
-    button.addEventListener("click", function() {
-      currentPage = Number(this.innerHTML);
-      paginate();
-    });
-    pagination.appendChild(button);
+    select.appendChild(option);
   }
+  pagination.appendChild(select);
 }
 
 // Call the paginate function to initialize the pagination
 paginate();
+
 
 </script>
 
@@ -578,9 +587,11 @@ function showPassword() {
 
                 <div class="small" >
                 <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Position:<label style="color: red;font-size:20px;">*<select name = "position" style="width:270px;">
-                                      <option value="Agent">Agent</option>
                                       <option value="BS">BS</option>
+                                      <option value="Agent">Agent</option>
                                       <option value="Manager">Manager</option>
+                                      <option value="A-Manager">A-Manager</option>
+                                 
                                      
                                       
                                     </select>

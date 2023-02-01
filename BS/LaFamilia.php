@@ -1,21 +1,41 @@
 
 
-<?php 
+<?php
+    // Connect to the database
+    $conn = mysqli_connect("localhost", "root", "123456", "db_ronex");
 
-require_once'process.php';
-$query = "SELECT * from member ORDER BY id DESC LIMIT 1;";
-$result = $mysqli->query($query);
-$row =$result->fetch_assoc();
-$idmember = $row['id'];
-$add ="1";
+    // Fetch the data from the database
+    $query = "SELECT fullname,branch FROM employee where position = 'Agent' ";
+    $result = mysqli_query($conn, $query);
 
-
+    // Convert the data into an array
+    $options = array();
+    while($row = mysqli_fetch_assoc($result)) {
+        $options[] = $row;
+        $branch[] = $row;
+        
+    }
 ?>
 
 
+
+<?php
+$servername='localhost';
+$username='root';
+$password='123456';
+$dbname = "db_ronex";
+$conn=mysqli_connect($servername,$username,$password,"$dbname");
+if(!$conn){
+die('Could not Connect My Sql:' .mysql_error());
+}
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+
+
+
+
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,11 +53,15 @@ $add ="1";
    
    <script type="text/javascript" src="assets/js/member.js"></script>
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 
 
 </head>
 
+
 <body>
+
+
 
 <?php require_once'process.php'; ?>
 <?php require_once'displayLF.php'; ?>
@@ -271,6 +295,7 @@ $add ="1";
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
+
                 <li>
                         <a  href="index.php"><i class="fa fa-dashboard"></i> DASHBOARD </a>
                     </li>
@@ -286,14 +311,15 @@ $add ="1";
                     </li>
 					
 
+
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i> PRODUCT <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a   href="Maharlika.php">Maharlika</a>
+                                <a  href="Maharlika.php">Maharlika</a>
                             </li>
-                            <li>
-                                <a  class="active-menu" href="LaFamilia.php">La Famillia</a>
+                          <li>
+                                <a  class="active-menu"  href="LaFamilia.php">La Famillia</a>
                             </li>
                             <li>
                                 <a  href="Seniorsafira.php">Senior Safira</a>
@@ -334,22 +360,27 @@ $add ="1";
 			 <div class="row">
              
              <img src="img/heading.png" alt="image">
+             
 
-<label> Search: </label> <input id='myInput' onkeyup='searchTable()'style="text-align:left;" type='text'> <button style="float: right;" class="btn btn-primary mb-2" data-toggle='modal' href='#Useradd' > + ADD LA FAMILIA MEMBER </button>  <br> <br>
-
-
-   
-
-
+             <i class="fa-sharp fa-solid fa-magnifying-glass fa-2x"> </i>  <input id='myInput' onkeyup='searchTable()'style="height:40px; width:300px; text-align:left" type='text'> &nbsp;&nbsp;    <a class="fa-solid fa-user-plus  fa-2x" data-toggle='modal' href='#Useradd' ></a>  &nbsp;&nbsp;
+              <i class="fa-solid fa-file-excel fa-2x" style="color: green;" onclick="exportExcel()"></i></a>  <br> 
+             <br>
+   <div  id="pagination"> </div>
+            
  <table class="table table-bordered" id='myTable'>
+
+ <tbody id="data-table-body">
 										
                             <th >CN.No</th>
 								<th >Name</th>
 								<th >Address</th>
 								<th >MOP </th>
-								<th >Effect Date</th>
+								<th >Effective Date</th>
 								<th >Status</th>
 								<th >Agent</th>
+                                <th >Edit</th>
+                                <th >Delete</th>
+                                <th >Payment</th>
 							
 							</tr>
 
@@ -363,24 +394,164 @@ $add ="1";
 								<td class="text-center"><?php echo $row['brgy']; ?>
                                 <?php echo $row['city']; ?>
 								<?php echo $row['prov']; ?></td>
-								<td class="text-center"><?php echo $row['mop']; ?></td>
+								<td class="text-center"><?php echo $row['modetag']; ?></td>
                                 <td class="text-center"><?php echo $row['edate']; ?></td>
 								<td class="text-center"><?php echo $row['type']; ?></td>
-								<td  class="text-center"><?php echo $row['coordinator']; ?>
-                                <td class="text-center"><a href="editLF.php?GetID=<?php echo $row['id'] ?>" class="btn btn-primary mb-2"> View </a></td>
-                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="btn btn-danger">Del.</a> </td>
-								<td class="text-center"><a class="btn btn-primary mb-2" data-toggle='modal' href='#Paynow'>Pay</a></td>
+								<td class="text-center"><?php echo $row['coordinator']; ?>
+                                <td class="text-center"><a href="editLF.php?GetID=<?php echo $row['id'] ?>" class="fa-sharp fa-solid fa-user-pen fa-2x" ></a></td>
+                                <td class="text-center"> <a href="DelLF.php?Del=<?php echo $row['id'] ?>" class="fa-solid fa-trash fa-2x" style="color: red;"></a> </td>
+								<td class="text-center"><a href="Maharlikapayment.php?GetID=<?php echo $row['id'] ?>" class="fa-sharp fa-solid fa-money-bill-1-wave fa-2x" style="color: green;"></a></td>
+                              
 								
 								
 							</tr>
 						<?php endwhile; ?>
 
-
-
-
+                        </tbody>
 
 						
  </table>
+
+
+
+
+ 
+ <script>
+
+
+
+function exportExcel() {
+    var table = document.getElementById("myTable");
+    var html = table.outerHTML;
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+}
+
+
+var currentPage = 1;
+var rowsPerPage = 31;
+
+// Get the total number of rows in the table
+var totalRows = document.getElementById("data-table-body").rows.length;
+
+// Calculate the total number of pages
+var totalPages = Math.ceil(totalRows / rowsPerPage);
+
+// Function to handle pagination
+function paginate() {
+  // Determine the start and end row for the current page
+  var startRow = (currentPage - 1) * rowsPerPage;
+  var endRow = startRow + rowsPerPage;
+
+  // Hide all rows in the table
+  var rows = document.getElementById("data-table-body").rows;
+  for (var i = 0; i < rows.length; i++) {
+    if (i >= startRow && i < endRow) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  // Generate the pagination dropdown
+  var pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  var label = document.createElement("label");
+  label.innerHTML = " &nbsp;&nbsp;&nbsp; PAGES:  ";
+  pagination.appendChild(label);
+
+  var select = document.createElement("select");
+  select.addEventListener("change", function() {
+    currentPage = Number(this.value);
+    paginate();
+  });
+  for (var i = 1; i <= totalPages; i++) {
+    var option = document.createElement("option");
+    option.value = i;
+    option.text = i;
+    if (i === currentPage) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+  pagination.appendChild(select);
+
+
+  var prevButton = document.createElement("button");
+  prevButton.innerHTML = "Back";
+  prevButton.addEventListener("click", function() {
+    if (currentPage > 1) {
+      currentPage--;
+      paginate();
+    }
+  });
+  pagination.appendChild(prevButton);
+  // Add next page button
+  var nextButton = document.createElement("button");
+  nextButton.innerHTML = "Next";
+  nextButton.addEventListener("click", function() {
+    if (currentPage < totalPages) {
+      currentPage++;
+      paginate();
+    }
+  });
+  pagination.appendChild(nextButton);
+
+  // Add back page button
+
+}
+
+// Call the paginate function to initialize the pagination
+paginate();
+
+
+
+
+
+
+
+
+
+function searchTable() {
+    // Get the input field value
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Get all cells in the current row
+      td = tr[i].getElementsByTagName("td");
+      var match = false;
+  
+      // Check if the row is a heading row
+      if (tr[i].getElementsByTagName("th").length > 0) {
+        tr[i].style.display = "";
+        continue;
+      }
+  
+      // Loop through all the table cells in the current row
+      for (var j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              match = true;
+              break;
+          }
+      }
+      if (match) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+
+
+ </script>
+
 
 
                     <div class="col-md-12">
@@ -406,21 +577,33 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>+ ADD LA FAMILIA DETAILS</center></h4>
+        <center>ADD MAHARLIKA MEMBER </center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
         		<form method="post" action="LaFamilia.php" enctype='multipart/form-data' style="width: 98%;">        		
+ 
 
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
-
-      	        
-                <input type="hidden" name="product" value="LF"/> 
+      	         <input type="hidden" name="product" value="LF"/> 
+             
+                  
         		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date" name ="edate" style="width:270px;"  name ="edate"></input></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;Mode Payment<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect Date:<label style="color: red;font-size:20px;">*</label><input type="date"  style="width:270px;"  name ="edate"></input></p>
+                
 
+                <div class="small" >
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOP:<label style="color: red;font-size:20px;">*<select name = "mop" style="width:270px;">
+                                      <option value="30">M</option>
+                                      <option value="90">Q</option>
+                                      <option value="180">SA</option>
+                                      <option value="360">A</option>
+                                      <option value="1800">SC</option>
+
+                                      
+                                    </select>
+                                    </span></p>
+                               </div>
                  
         	    <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firstname:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="fname"></span></p>
         		<p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp; &nbsp;&nbsp;&nbsp;Middlename:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mname"></span></p>
@@ -483,24 +666,50 @@ $add ="1";
                  
 
 
-                                <input type="hidden" name="cfname" value="NONE"/> 
+                               <input type="hidden" name="cfname" value="NONE"/> 
                                <input type="hidden" name="clname" value="NONE"/> 
                                <input type="hidden" name="cage" value="NONE"/> 
                                <input type="hidden" name="crelation" value="NONE"/> 
-                 
+
+
+
+                          
                  <div class="small" >
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select name = "coordinator" style="width:270px;">
-                                      <option value="Agent name 1">Agent name 1</option>
-                                      <option value="Agent name 2">Agent name 2</option>
-                                      
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coordinator:<label style="color: red;font-size:20px;">*<select id="search" name = "coordinator" style="width:270px;">
+                                      <option id="myList"  <?php foreach ($options as $option) { ?>
+            <option value="<?= $option['fullname']?>"><?= $option['fullname'] ?></option>
+        <?php } ?> ></option>
+                                     
+    
+
                                     </select>
                                     </span></p>
                                </div>
 
-                               <input type="hidden" name="contractamount" value="27600"/> 
-                               <input type="hidden" name="status" value="Active"/>
+
+
                                
-        		                                                      	      		
+                 
+                               <div class="small" >
+                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Branch:<label style="color: red;font-size:20px;">*<select name = "branch" style="width:270px;">
+                                      <option value="Esperanza" >Esperanza</option>
+                                      <option value="Isulan">Isulan</option>
+                                      <option value="Tacurong">Tacurong</option>
+                                      <option value="Bagumbayan">Bagumbayan</option>
+                                      
+                                    </select>
+                                    </span></p>
+                               </div>
+              
+                                     
+    
+
+
+                          
+                               <input type="hidden" name="status" value="Active"/>
+                              
+  
+
          </center>
 
       </div>
@@ -510,11 +719,27 @@ $add ="1";
       </div>
       </div> 
        </form>
-
-
-
   </div>
   </div> 
+
+
+<script>
+  function filterOptions() {
+  var searchTerm = document.getElementById("search").value.toLowerCase();
+  var select = document.getElementById("myList");
+  var options = select.options;
+
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].text.toLowerCase().indexOf(searchTerm) === -1) {
+      options[i].style.display = "none";
+    } else {
+      options[i].style.display = "block";
+    }
+  }
+}
+
+</script>
+
 
 
 
@@ -527,12 +752,12 @@ $add ="1";
       <div class="modal-header" style="background:#222d32">
         <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>ADD LA FAMILIA MEMBER</center></h4>
+        <center>ADD MEMBER DETAILS</center></h4>
       </div>
 
       <div class="modal-body" >       	
       	<center> 
-        		<form method="post" action="listmembers.php" enctype='multipart/form-data' style="width: 98%;">        		
+        		<form method="post" action="LaFamilia.php" enctype='multipart/form-data' style="width: 98%;">        		
 
             	
       	        <p style="margin-bottom:10px;">  
@@ -604,6 +829,8 @@ $add ="1";
                                     </select>
                                     </span></p>
                                </div>
+
+
         		                                                         	      		
          </center>
 
@@ -621,43 +848,9 @@ $add ="1";
   </div>
 
 
-  <div id="Paynow" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content" style="font-size: 14px; font-family: Times New Roman;color:black;">
-      <div class="modal-header" style="background:#222d32">
-        <button type="button" id="Useradd" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" style="font-weight: bold;color: #F0F0F0">
-        <center>PAYMENT TRANSACTION </center></h4>
-      </div>
-
-      <div class="modal-body" >       	
-      	<center> 
-        		<form method="post" action="Maharlika.php" enctype='multipart/form-data' style="width: 98%;">        		
-
-            	<input type="hidden" name="idmember" value="<?php echo $idmember+$add ?>"/> 
-
-      	      <input type="hidden" name="product" value="M"/> 
-                  
-        		         
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp; OR NUMBER:<label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-                <p style="margin-bottom:10px;"><span style="font-size: 18px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMOUNT: <label style="color: red;font-size:20px;">*</label><input style="width:270px;" type="text" name="mop"></span></p>
-          
-        		                                                      	      		
-         </center>
-
-      </div>
-      <div class="modal-footer">
-       <button type="submit" class="btn btn-success" name="save"> Pay Now </button>&nbsp;
-        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-      </div>
-      </div> 
-       </form>
+ 
 
 
-
-  </div>
-  </div> 
 
 
         
